@@ -1,6 +1,7 @@
 import { Select as SelectKitten, SelectProps as SelectKittenProps, SelectItem, Text } from '@ui-kitten/components'
 import { useMemo } from 'react'
 import { StyleSheet, Appearance, View } from 'react-native'
+import { ErrorMessage } from './ErrorMessage'
 
 const selectStyles = StyleSheet.create({
   container: {},
@@ -9,6 +10,9 @@ const selectStyles = StyleSheet.create({
 export interface SelectProps extends SelectKittenProps {
   label?: string
   options: string[]
+  hasError?: boolean
+  required?: boolean
+  errorMessage?: string
 }
 
 export const Select = ({
@@ -19,6 +23,9 @@ export const Select = ({
   onSelect,
   multiSelect = false,
   placeholder,
+  hasError = false,
+  required = false,
+  errorMessage = '',
 }: SelectProps) => {
   const colorSchema = Appearance.getColorScheme()
   const styles = StyleSheet.compose(selectStyles.container, style)
@@ -42,12 +49,13 @@ export const Select = ({
             marginBottom: 5,
           }}
         >
-          {label}
+          {label} {required ? '(required)' : ''}
         </Text>
       )}
-      <View style={styles}>
+      <View style={[styles]}>
         <SelectKitten
           size="small"
+          status={!hasError ? 'basic' : 'danger'}
           selectedIndex={selectedIndex}
           multiSelect={multiSelect}
           onSelect={onSelect}
@@ -58,6 +66,7 @@ export const Select = ({
             <SelectItem key={`${item}-${idx}`} title={item} />
           ))}
         </SelectKitten>
+        <ErrorMessage show={hasError} required={required} customMessage={errorMessage} />
       </View>
     </>
   )

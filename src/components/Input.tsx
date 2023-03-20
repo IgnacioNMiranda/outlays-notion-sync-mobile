@@ -1,22 +1,40 @@
 import { StyleSheet, TextInputProps, Appearance, View } from 'react-native'
 import { Input as InputKitten, Text } from '@ui-kitten/components'
+import { ErrorMessage } from './ErrorMessage'
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     borderRadius: 3,
   },
+  error: {
+    borderColor: '#774430',
+  },
+  normal: {},
 })
 
 export interface InputProps extends TextInputProps {
   label?: string
+  hasError?: boolean
+  required?: boolean
+  errorMessage?: string
 }
 
-export const Input = ({ label = '', value, onChangeText, keyboardType = 'default', onChange, ...rest }: InputProps) => {
+export const Input = ({
+  label = '',
+  value,
+  onChangeText,
+  keyboardType = 'default',
+  onChange,
+  hasError = false,
+  required = false,
+  errorMessage = '',
+  ...rest
+}: InputProps) => {
   const colorSchema = Appearance.getColorScheme()
 
   return (
-    <View style={{ width: '100%' }}>
+    <View style={rest.style}>
       {label && (
         <Text
           style={{
@@ -27,17 +45,18 @@ export const Input = ({ label = '', value, onChangeText, keyboardType = 'default
             marginBottom: 5,
           }}
         >
-          {label}
+          {label} {required ? '(required)' : ''}
         </Text>
       )}
       <InputKitten
         onChangeText={onChangeText}
         onChange={onChange}
         size="small"
-        style={StyleSheet.compose(styles.container, rest.style)}
+        style={[styles.container, hasError ? styles.error : styles.normal]}
         value={value}
         keyboardType={keyboardType}
       />
+      <ErrorMessage show={hasError} required={required} customMessage={errorMessage} />
     </View>
   )
 }

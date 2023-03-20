@@ -3,6 +3,7 @@ import { useCustomFonts } from '../hooks/use-custom-fonts'
 import { Form } from './Form'
 import * as eva from '@eva-design/eva'
 import { ApplicationProvider, Layout } from '@ui-kitten/components'
+import { default as mapping } from '../../mapping.json'
 
 const mainStyles = StyleSheet.create({
   container: {
@@ -43,7 +44,7 @@ export const Main = () => {
   if (!fontsLoaded) return null
 
   return (
-    <ApplicationProvider {...eva} theme={eva.light}>
+    <ApplicationProvider {...eva} theme={eva.light} customMapping={mapping}>
       <Layout
         onLayout={onLayoutRootView}
         style={StyleSheet.compose(
