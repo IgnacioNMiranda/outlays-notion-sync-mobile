@@ -1,8 +1,8 @@
 import { View, StyleSheet, Text, StatusBar, Appearance } from 'react-native'
 import { useCustomFonts } from '../hooks/use-custom-fonts'
 import { Form } from './Form'
-
-StatusBar.setBarStyle('light-content')
+import * as eva from '@eva-design/eva'
+import { ApplicationProvider, Layout } from '@ui-kitten/components'
 
 const mainStyles = StyleSheet.create({
   container: {
@@ -43,16 +43,19 @@ export const Main = () => {
   if (!fontsLoaded) return null
 
   return (
-    <View
-      onLayout={onLayoutRootView}
-      style={StyleSheet.compose(
-        mainStyles.container,
-        colorScheme === 'dark' ? darkMainStyles.container : lightMainStyles.container,
-      )}
-    >
-      <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} backgroundColor={'green'} />
-      <Text style={titleStyles.container}>Outlays Sync</Text>
-      <Form />
-    </View>
+    <ApplicationProvider {...eva} theme={eva.light}>
+      <Layout
+        onLayout={onLayoutRootView}
+        style={StyleSheet.compose(
+          mainStyles.container,
+          colorScheme === 'dark' ? darkMainStyles.container : lightMainStyles.container,
+        )}
+        level="1"
+      >
+        <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} backgroundColor={'green'} />
+        <Text style={titleStyles.container}>Outlays Sync</Text>
+        <Form />
+      </Layout>
+    </ApplicationProvider>
   )
 }

@@ -1,18 +1,26 @@
-import DateTimePicker from '@react-native-community/datetimepicker'
-import { useState } from 'react'
-import { View, Text, Appearance } from 'react-native'
+import { Datepicker, Text } from '@ui-kitten/components'
+import { View, Appearance, StyleSheet, StyleProp, ViewStyle } from 'react-native'
 
-export const DateInput = ({ label = '' }: { label?: string }) => {
+const dateInputStyles = StyleSheet.create({
+  container: {},
+})
+
+export const DateInput = ({
+  label = '',
+  date,
+  onChange,
+  style,
+}: {
+  label?: string
+  date: Date
+  onChange: (selectedDate: Date) => void
+  style?: StyleProp<ViewStyle>
+}) => {
   const colorSchema = Appearance.getColorScheme()
-  const [date, setDate] = useState(new Date(Date.now()))
-
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate
-    setDate(currentDate)
-  }
+  const styles = StyleSheet.compose(dateInputStyles.container, style)
 
   return (
-    <View style={{ width: '100%' }}>
+    <View style={styles}>
       {label && (
         <Text
           style={{
@@ -26,13 +34,7 @@ export const DateInput = ({ label = '' }: { label?: string }) => {
           {label}
         </Text>
       )}
-      <DateTimePicker
-        value={date}
-        display="default"
-        mode="date"
-        style={{ backgroundColor: 'white', display: 'flex', flexDirection: 'row-reverse' }}
-        onChange={onChange}
-      />
+      <Datepicker size="small" date={date} style={{ borderRadius: 3, backgroundColor: 'white' }} onSelect={onChange} />
     </View>
   )
 }

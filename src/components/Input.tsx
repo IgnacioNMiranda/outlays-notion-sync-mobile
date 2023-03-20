@@ -1,10 +1,10 @@
-import { StyleSheet, TextInput, TextInputProps, Text, Appearance, View } from 'react-native'
+import { StyleSheet, TextInputProps, Appearance, View } from 'react-native'
+import { Input as InputKitten, Text } from '@ui-kitten/components'
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    padding: 5,
-    borderRadius: 2,
+    borderRadius: 3,
   },
 })
 
@@ -30,9 +30,10 @@ export const Input = ({ label = '', value, onChangeText, onChange, ...rest }: In
           {label}
         </Text>
       )}
-      <TextInput
+      <InputKitten
         onChangeText={onChangeText}
         onChange={onChange}
+        size="small"
         style={StyleSheet.compose(styles.container, rest.style)}
         value={value}
       />

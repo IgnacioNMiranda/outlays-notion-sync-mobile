@@ -1,7 +1,9 @@
+import { IndexPath, Text } from '@ui-kitten/components'
 import { useState } from 'react'
-import { View, StyleSheet, Text, GestureResponderEvent, Alert, TouchableHighlight } from 'react-native'
+import { View, StyleSheet, GestureResponderEvent, Alert, TouchableHighlight } from 'react-native'
 import { DateInput } from './DateInput'
 import { Input } from './Input'
+import { Select } from './Select'
 
 const formStyles = StyleSheet.create({
   container: {
@@ -16,28 +18,34 @@ const inputStyles = StyleSheet.create({
     width: '100%',
   },
 })
+const submitButtonStyles = StyleSheet.create({
+  container: {
+    padding: 5,
+    backgroundColor: 'white',
+    width: 100,
+    borderRadius: 2,
+    display: 'flex',
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
+})
 
 const INITIAL_FORM_STATE = {
   name: '',
-  customDate: '',
-  tags: '',
+  customDate: undefined,
+  tags: [new IndexPath(0), new IndexPath(1)],
   price: '',
   paymentMethod: '',
 }
 
 export const Form = () => {
   const [isSubmitPress, setIsSubmitPress] = useState(false)
-  const submitButtonStyles = StyleSheet.create({
-    container: {
-      padding: 5,
-      backgroundColor: 'white',
-      width: 100,
-      borderRadius: 2,
-      display: 'flex',
-      alignItems: 'center',
-      alignSelf: 'center',
-    },
-  })
+
+  const onDateChange = (selectedDate: Date) => {
+    setValues({ ...values, customDate: selectedDate })
+  }
+
+  const tagOptions = ['Apple', 'Banana']
 
   const [values, setValues] = useState(INITIAL_FORM_STATE)
 
@@ -54,12 +62,14 @@ export const Form = () => {
         style={inputStyles.container}
         onChangeText={(text) => setValues({ ...values, name: text })}
       />
-      <DateInput label="Custom Date" />
-      <Input
-        value={values.tags}
+      <DateInput label="Custom Date" date={values.customDate} onChange={onDateChange} style={{ marginBottom: 20 }} />
+      <Select
+        onSelect={(tags: IndexPath[]) => setValues({ ...values, tags })}
+        items={tagOptions}
+        selectedIndex={values.tags}
+        style={{ marginBottom: 20, borderRadius: 2 }}
         label="Tags"
-        style={inputStyles.container}
-        onChangeText={(text) => setValues({ ...values, tags: text })}
+        multiSelect
       />
       <Input
         value={values.price}
