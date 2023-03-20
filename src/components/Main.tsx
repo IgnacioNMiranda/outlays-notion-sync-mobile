@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, StatusBar, Appearance } from 'react-native'
+import { StyleSheet, Text, StatusBar, Appearance } from 'react-native'
 import { useCustomFonts } from '../hooks/use-custom-fonts'
 import { Form } from './Form'
 import * as eva from '@eva-design/eva'

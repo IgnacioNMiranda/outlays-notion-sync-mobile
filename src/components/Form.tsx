@@ -1,6 +1,9 @@
+import { DatabaseObjectResponse } from '@notionhq/client/build/src/api-endpoints'
 import { IndexPath, Text } from '@ui-kitten/components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { View, StyleSheet, GestureResponderEvent, Alert, TouchableHighlight } from 'react-native'
+import { useQuery } from 'react-query'
+import { getData } from '../services/notion/common'
 import { DateInput } from './DateInput'
 import { Input } from './Input'
 import { Select } from './Select'
@@ -45,10 +48,12 @@ const INITIAL_FORM_STATE: FormData = {
   price: '',
   paymentMethod: undefined,
 }
-const tags = ['Apple', 'Banana']
-const paymentMethods = ['Transfer', 'National Credit', 'International Credit']
 
 export const Form = () => {
+  const {
+    data: { tags, paymentMethods },
+  } = useQuery('data', getData)
+
   const [values, setValues] = useState<FormData>(INITIAL_FORM_STATE)
 
   const onDateChange = (selectedDate: Date) => {
