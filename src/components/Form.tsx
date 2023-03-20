@@ -7,6 +7,7 @@ import { DateInput } from './DateInput'
 import { Input } from './Input'
 import { Select } from './Select'
 import { FormData, getUpdatedFormState, resetForm } from '../utils/form'
+import { CreateOutlayDTO } from '../dtos/create-outlay-dto'
 
 const formStyles = StyleSheet.create({
   container: {
@@ -81,10 +82,12 @@ export const Form = () => {
     const formState = getUpdatedFormState(values)
     setValues(formState.values)
     if (!formState.hasErrors) {
-      const sanitizedValues = {
-        ...values,
+      const date = values.customDate.value?.toString().split('T')[0]
+      const sanitizedValues: CreateOutlayDTO = {
+        name: values.name.value,
+        ...(date && { customDate: date }),
         tags: values.tags.value.map((tagIndex) => data.tags[tagIndex.row]),
-        price: Number(values.price),
+        price: Number(values.price.value),
         paymentMethod: values.paymentMethod?.value && data.paymentMethods[values.paymentMethod.value.row],
       }
       Alert.alert('Submitted!')
