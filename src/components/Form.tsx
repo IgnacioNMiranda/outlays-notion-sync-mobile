@@ -1,15 +1,17 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { View, StyleSheet, Text, GestureResponderEvent, Alert, TouchableHighlight } from 'react-native'
+import { DateInput } from './DateInput'
 import { Input } from './Input'
 
-const styles = StyleSheet.create({
+const formStyles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
     width: '80%',
   },
-  input: {
+})
+const inputStyles = StyleSheet.create({
+  container: {
     marginBottom: 20,
     width: '100%',
   },
@@ -31,9 +33,9 @@ export const Form = () => {
       backgroundColor: 'white',
       width: 100,
       borderRadius: 2,
-      textAlign: 'center',
       display: 'flex',
       alignItems: 'center',
+      alignSelf: 'center',
     },
   })
 
@@ -45,36 +47,30 @@ export const Form = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={formStyles.container}>
       <Input
-        id="fds"
         value={values.name}
         label="Name"
-        style={styles.input}
+        style={inputStyles.container}
         onChangeText={(text) => setValues({ ...values, name: text })}
       />
-      <Input
-        value={values.customDate}
-        label="Custom Date"
-        style={styles.input}
-        onChangeText={(text) => setValues({ ...values, customDate: text })}
-      />
+      <DateInput label="Custom Date" />
       <Input
         value={values.tags}
         label="Tags"
-        style={styles.input}
+        style={inputStyles.container}
         onChangeText={(text) => setValues({ ...values, tags: text })}
       />
       <Input
         value={values.price}
         label="Price"
-        style={styles.input}
+        style={inputStyles.container}
         onChangeText={(text) => setValues({ ...values, price: text })}
       />
       <Input
         value={values.paymentMethod}
         label="Payment Method"
-        style={styles.input}
+        style={inputStyles.container}
         onChangeText={(text) => setValues({ ...values, paymentMethod: text })}
       />
       <TouchableHighlight
@@ -85,7 +81,7 @@ export const Form = () => {
         onHideUnderlay={() => setIsSubmitPress(false)}
         onShowUnderlay={() => setIsSubmitPress(true)}
       >
-        <Text style={{ color: isSubmitPress ? 'white' : 'black' }}>Submit</Text>
+        <Text style={{ color: isSubmitPress ? 'white' : 'black', fontFamily: 'Sono' }}>Submit</Text>
       </TouchableHighlight>
     </View>
   )

@@ -1,4 +1,5 @@
 import { View, StyleSheet, Text, StatusBar, Appearance } from 'react-native'
+import { useCustomFonts } from '../hooks/use-custom-fonts'
 import { Form } from './Form'
 
 StatusBar.setBarStyle('light-content')
@@ -10,6 +11,7 @@ const mainStyles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     height: '100%',
+    fontFamily: 'Sono',
   },
 })
 const darkMainStyles = StyleSheet.create({
@@ -27,15 +29,22 @@ const lightMainStyles = StyleSheet.create({
 
 const titleStyles = StyleSheet.create({
   container: {
-    fontSize: 32,
+    fontSize: 24,
     paddingBottom: 40,
+    fontWeight: '300',
+    fontFamily: 'Sono',
   },
 })
 
 export const Main = () => {
   const colorScheme = Appearance.getColorScheme()
+
+  const { fontsLoaded, onLayoutRootView } = useCustomFonts()
+  if (!fontsLoaded) return null
+
   return (
     <View
+      onLayout={onLayoutRootView}
       style={StyleSheet.compose(
         mainStyles.container,
         colorScheme === 'dark' ? darkMainStyles.container : lightMainStyles.container,
