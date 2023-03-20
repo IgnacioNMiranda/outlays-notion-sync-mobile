@@ -2,6 +2,7 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "strict": false
+    "strict": false,
+    "typeRoots": ["./src/types"]
   }
 }
