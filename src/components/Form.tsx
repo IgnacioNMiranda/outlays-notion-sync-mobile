@@ -30,27 +30,46 @@ const submitButtonStyles = StyleSheet.create({
   },
 })
 
-const INITIAL_FORM_STATE = {
-  name: '',
-  customDate: undefined,
-  tags: [new IndexPath(0), new IndexPath(1)],
-  price: '',
-  paymentMethod: '',
+interface FormData {
+  name: string
+  customDate: Date
+  tags: IndexPath[]
+  price: string
+  paymentMethod: IndexPath
 }
 
+const INITIAL_FORM_STATE: FormData = {
+  name: '',
+  customDate: undefined,
+  tags: [],
+  price: '',
+  paymentMethod: undefined,
+}
+const tags = ['Apple', 'Banana']
+const paymentMethods = ['Transfer', 'National Credit', 'International Credit']
+
 export const Form = () => {
-  const [isSubmitPress, setIsSubmitPress] = useState(false)
+  const [values, setValues] = useState<FormData>(INITIAL_FORM_STATE)
 
   const onDateChange = (selectedDate: Date) => {
     setValues({ ...values, customDate: selectedDate })
   }
 
-  const tagOptions = ['Apple', 'Banana']
+  const onPriceChange = (price: string) => {
+    const sanitizedPrice = price.match(/\d+/)
+    if (sanitizedPrice) setValues({ ...values, price: sanitizedPrice.toString() })
+  }
 
-  const [values, setValues] = useState(INITIAL_FORM_STATE)
-
+  const [isSubmitPress, setIsSubmitPress] = useState(false)
   const onSubmitPress = (e: GestureResponderEvent) => {
-    Alert.alert(JSON.stringify(values, null, 2))
+    const sanitizedValues = {
+      ...values,
+      tags: values.tags.map((tagIndex) => tags[tagIndex.row]),
+      price: Number(values.price),
+      paymentMethod: paymentMethods[values.paymentMethod.row],
+    }
+    Alert.alert('Submitted!')
+    // @TODO: call API
     setValues(INITIAL_FORM_STATE)
   }
 
@@ -65,23 +84,27 @@ export const Form = () => {
       <DateInput label="Custom Date" date={values.customDate} onChange={onDateChange} style={{ marginBottom: 20 }} />
       <Select
         onSelect={(tags: IndexPath[]) => setValues({ ...values, tags })}
-        items={tagOptions}
+        options={tags}
         selectedIndex={values.tags}
         style={{ marginBottom: 20, borderRadius: 2 }}
         label="Tags"
+        placeholder="Select Tags"
         multiSelect
       />
       <Input
         value={values.price}
         label="Price"
         style={inputStyles.container}
-        onChangeText={(text) => setValues({ ...values, price: text })}
+        onChangeText={onPriceChange}
+        keyboardType="number-pad"
       />
-      <Input
-        value={values.paymentMethod}
+      <Select
+        onSelect={(paymentMethod: IndexPath) => setValues({ ...values, paymentMethod })}
+        options={paymentMethods}
+        selectedIndex={values.paymentMethod}
+        style={{ marginBottom: 20, borderRadius: 2 }}
         label="Payment Method"
-        style={inputStyles.container}
-        onChangeText={(text) => setValues({ ...values, paymentMethod: text })}
+        placeholder="Select Payment Method"
       />
       <TouchableHighlight
         underlayColor="#3E7A85"

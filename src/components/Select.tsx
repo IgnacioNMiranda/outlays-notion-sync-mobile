@@ -1,34 +1,33 @@
-import { IndexPath, Select as SelectKitten, SelectItem, Text } from '@ui-kitten/components'
+import { Select as SelectKitten, SelectProps as SelectKittenProps, SelectItem, Text } from '@ui-kitten/components'
 import { useMemo } from 'react'
-import { StyleProp, StyleSheet, ViewStyle, Appearance, View } from 'react-native'
+import { StyleSheet, Appearance, View } from 'react-native'
 
 const selectStyles = StyleSheet.create({
   container: {},
 })
 
+export interface SelectProps extends SelectKittenProps {
+  label?: string
+  options: string[]
+}
+
 export const Select = ({
   style,
   label = '',
   selectedIndex,
-  items,
+  options,
   onSelect,
   multiSelect = false,
-}: {
-  label?: string
-  style?: StyleProp<ViewStyle>
-  selectedIndex: IndexPath | IndexPath[]
-  items: string[]
-  onSelect: any
-  multiSelect?: boolean
-}) => {
+  placeholder,
+}: SelectProps) => {
   const colorSchema = Appearance.getColorScheme()
   const styles = StyleSheet.compose(selectStyles.container, style)
 
   const displayedValue = useMemo(() => {
     if (typeof selectedIndex === 'object' && Array.isArray(selectedIndex)) {
-      return selectedIndex.map((index) => items[index.row]).join(',')
-    }
-    return items[selectedIndex.row]
+      return selectedIndex.map((index) => options[index.row]).join(', ')
+    } else if (selectedIndex) return options[selectedIndex.row]
+    return ''
   }, [selectedIndex])
 
   return (
@@ -52,10 +51,10 @@ export const Select = ({
           selectedIndex={selectedIndex}
           multiSelect={multiSelect}
           onSelect={onSelect}
-          placeholder="Select Tags"
+          placeholder={placeholder}
           value={displayedValue}
         >
-          {items.map((item, idx) => (
+          {options.map((item, idx) => (
             <SelectItem key={`${item}-${idx}`} title={item} />
           ))}
         </SelectKitten>

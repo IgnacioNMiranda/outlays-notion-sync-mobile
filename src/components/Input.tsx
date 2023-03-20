@@ -12,7 +12,7 @@ export interface InputProps extends TextInputProps {
   label?: string
 }
 
-export const Input = ({ label = '', value, onChangeText, onChange, ...rest }: InputProps) => {
+export const Input = ({ label = '', value, onChangeText, keyboardType = 'default', onChange, ...rest }: InputProps) => {
   const colorSchema = Appearance.getColorScheme()
 
   return (
@@ -36,6 +36,7 @@ export const Input = ({ label = '', value, onChangeText, onChange, ...rest }: In
         size="small"
         style={StyleSheet.compose(styles.container, rest.style)}
         value={value}
+        keyboardType={keyboardType}
       />
     </View>
   )
