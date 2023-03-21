@@ -4,5 +4,4 @@ export interface CreateOutlayDTO {
   tags: string[]
   price: number
   paymentMethod: string
-  isCredit: boolean
 }

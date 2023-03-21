@@ -61,12 +61,9 @@ const INITIAL_FORM_STATE: FormData = {
     required: true,
     error: false,
   },
-  isCredit: {
-    value: false,
-    required: true,
-    error: false,
-  },
 }
+
+const CREDIT_TYPES = ['International', 'National']
 
 export const Form = () => {
   const { data } = useQuery('data', getData)
@@ -92,7 +89,6 @@ export const Form = () => {
       const sanitizedValues: CreateOutlayDTO = {
         name: values.name.value,
         date,
-        isCredit: values.isCredit.value,
         tags: values.tags.value.map((tagIndex) => data.tags[tagIndex.row]),
         price: Number(values.price.value),
         paymentMethod: values.paymentMethod?.value && data.paymentMethods[values.paymentMethod.value.row],
@@ -153,17 +149,6 @@ export const Form = () => {
         placeholder="Select Payment Method"
         hasError={values.paymentMethod.error}
         required
-      />
-      <CheckBox
-        label="Is Credit ?"
-        onChange={(checked: boolean) => {
-          setValues({
-            ...values,
-            isCredit: { ...values.isCredit, value: checked },
-          })
-        }}
-        checked={values.isCredit.value}
-        style={{ marginBottom: 20 }}
       />
       <TouchableHighlight
         underlayColor="#3E7A85"
