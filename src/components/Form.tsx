@@ -41,8 +41,8 @@ const INITIAL_FORM_STATE: FormData = {
     required: true,
     error: false,
   },
-  customDate: {
-    value: undefined,
+  date: {
+    value: new Date(),
     required: false,
     error: false,
   },
@@ -74,7 +74,7 @@ export const Form = () => {
   const [values, setValues] = useState<FormData>(INITIAL_FORM_STATE)
 
   const onDateChange = (selectedDate: Date) => {
-    setValues({ ...values, customDate: { ...values.customDate, value: selectedDate } })
+    setValues({ ...values, date: { ...values.date, value: selectedDate } })
   }
 
   const onPriceChange = (price: string) => {
@@ -88,10 +88,10 @@ export const Form = () => {
     const formState = getUpdatedFormState(values)
     setValues(formState.values)
     if (!formState.hasErrors) {
-      const date = values.customDate.value?.toString().split('T')[0]
+      const date = values.date.value.toString().split('T')[0]
       const sanitizedValues: CreateOutlayDTO = {
         name: values.name.value,
-        ...(date && { customDate: date }),
+        date,
         isCredit: values.isCredit.value,
         tags: values.tags.value.map((tagIndex) => data.tags[tagIndex.row]),
         price: Number(values.price.value),
@@ -116,12 +116,7 @@ export const Form = () => {
         required
         hasError={values.name.error}
       />
-      <DateInput
-        label="Custom Date"
-        date={values.customDate.value}
-        onChange={onDateChange}
-        style={{ marginBottom: 20 }}
-      />
+      <DateInput required label="Date" date={values.date.value} onChange={onDateChange} style={{ marginBottom: 20 }} />
       <Select
         onSelect={(tags: IndexPath[]) => {
           setValues({ ...values, tags: { ...values.tags, value: tags, error: !tags.length } })

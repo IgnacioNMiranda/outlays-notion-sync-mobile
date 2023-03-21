@@ -9,7 +9,7 @@ interface FieldData<FieldValue> {
 
 export interface FormData {
   name: FieldData<string>
-  customDate: FieldData<Date>
+  date: FieldData<Date>
   tags: FieldData<IndexPath[]>
   price: FieldData<string>
   paymentMethod: FieldData<IndexPath>

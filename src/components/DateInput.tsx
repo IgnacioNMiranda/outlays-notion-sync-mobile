@@ -10,11 +10,13 @@ export const DateInput = ({
   date,
   onChange,
   style,
+  required = false,
 }: {
   label?: string
   date: Date
   onChange: (selectedDate: Date) => void
   style?: StyleProp<ViewStyle>
+  required?: boolean
 }) => {
   const colorSchema = Appearance.getColorScheme()
   const styles = StyleSheet.compose(dateInputStyles.container, style)
@@ -31,7 +33,7 @@ export const DateInput = ({
             marginBottom: 5,
           }}
         >
-          {label}
+          {label} {required ? '(required)' : ''}
         </Text>
       )}
       <Datepicker size="small" date={date} style={{ borderRadius: 3, backgroundColor: 'white' }} onSelect={onChange} />
