@@ -34,6 +34,30 @@
           }
         }
       }
+    },
+    "CheckBox": {
+      "appearances": {
+        "default": {
+          "variantGroups": {
+            "status": {
+              "basic": {
+                "backgroundColor": "#FFF",
+                "state": {
+                  "checked": {
+                    "backgroundColor": "#3E7A85"
+                  },
+                  "active": {
+                    "backgroundColor": "#2F4858"
+                  },
+                  "checked.active": {
+                    "backgroundColor": "#2F4858"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -13,6 +13,7 @@ export interface FormData {
   tags: FieldData<IndexPath[]>
   price: FieldData<string>
   paymentMethod: FieldData<IndexPath>
+  isCredit: FieldData<boolean>
 }
 
 export const getUpdatedFormState = (formData: FormData) => {
@@ -36,7 +37,7 @@ export const getUpdatedFormState = (formData: FormData) => {
 
   return {
     hasErrors: Object.keys(formData).some((key: keyof FormData) => {
-      if (formData[key].required && !formData[key].value) return true
+      if (formData[key].required && !formData[key].value && typeof formData[key].value !== 'boolean') return true
     }),
     values: newFormData,
   }

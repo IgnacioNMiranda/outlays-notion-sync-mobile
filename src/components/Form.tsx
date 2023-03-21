@@ -8,6 +8,7 @@ import { Input } from './Input'
 import { Select } from './Select'
 import { FormData, getUpdatedFormState, resetForm } from '../utils/form'
 import { CreateOutlayDTO } from '../dtos/create-outlay-dto'
+import { CheckBox } from './CheckBox'
 
 const formStyles = StyleSheet.create({
   container: {
@@ -60,6 +61,11 @@ const INITIAL_FORM_STATE: FormData = {
     required: true,
     error: false,
   },
+  isCredit: {
+    value: false,
+    required: true,
+    error: false,
+  },
 }
 
 export const Form = () => {
@@ -86,6 +92,7 @@ export const Form = () => {
       const sanitizedValues: CreateOutlayDTO = {
         name: values.name.value,
         ...(date && { customDate: date }),
+        isCredit: values.isCredit.value,
         tags: values.tags.value.map((tagIndex) => data.tags[tagIndex.row]),
         price: Number(values.price.value),
         paymentMethod: values.paymentMethod?.value && data.paymentMethods[values.paymentMethod.value.row],
@@ -151,6 +158,17 @@ export const Form = () => {
         placeholder="Select Payment Method"
         hasError={values.paymentMethod.error}
         required
+      />
+      <CheckBox
+        label="Is Credit ?"
+        onChange={(checked: boolean) => {
+          setValues({
+            ...values,
+            isCredit: { ...values.isCredit, value: checked },
+          })
+        }}
+        checked={values.isCredit.value}
+        style={{ marginBottom: 20 }}
       />
       <TouchableHighlight
         underlayColor="#3E7A85"
