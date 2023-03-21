@@ -1,14 +1,14 @@
 import { IndexPath, Text } from '@ui-kitten/components'
 import { useState } from 'react'
 import { View, StyleSheet, GestureResponderEvent, Alert, TouchableHighlight } from 'react-native'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { getData } from '../services/notion/common'
 import { DateInput } from './DateInput'
 import { Input } from './Input'
 import { Select } from './Select'
 import { FormData, getUpdatedFormState, resetForm } from '../utils/form'
 import { CreateOutlayDTO } from '../dtos/create-outlay-dto'
-import { CheckBox } from './CheckBox'
+import { createOutlay } from '../services/outlays/common'
 
 const formStyles = StyleSheet.create({
   container: {
@@ -66,6 +66,7 @@ const INITIAL_FORM_STATE: FormData = {
 const CREDIT_TYPES = ['International', 'National']
 
 export const Form = () => {
+  const createOutlayMutation = useMutation('d', createOutlay)
   const { data } = useQuery('data', getData)
 
   const [values, setValues] = useState<FormData>(INITIAL_FORM_STATE)
@@ -81,11 +82,11 @@ export const Form = () => {
   }
 
   const [isSubmitPress, setIsSubmitPress] = useState(false)
-  const onSubmitPress = (e: GestureResponderEvent) => {
+  const onSubmitPress = async (e: GestureResponderEvent) => {
     const formState = getUpdatedFormState(values)
     setValues(formState.values)
     if (!formState.hasErrors) {
-      const date = values.date.value.toString().split('T')[0]
+      const date = values.date.value.toISOString().split('T')[0]
       const sanitizedValues: CreateOutlayDTO = {
         name: values.name.value,
         date,
@@ -93,10 +94,14 @@ export const Form = () => {
         price: Number(values.price.value),
         paymentMethod: values.paymentMethod?.value && data.paymentMethods[values.paymentMethod.value.row],
       }
-      Alert.alert('Submitted!')
-      // @TODO: call API
-      const resettedFormValues = resetForm(values, INITIAL_FORM_STATE)
-      setValues(resettedFormValues)
+      const outlayData = await createOutlayMutation.mutateAsync(sanitizedValues)
+      if (outlayData.data) {
+        Alert.alert(`'${sanitizedValues.name}' outlay submitted!`)
+        const resettedFormValues = resetForm(values, INITIAL_FORM_STATE)
+        setValues(resettedFormValues)
+      } else {
+        Alert.alert(`'${outlayData.error}'. Try again later.`)
+      }
     }
   }
 
