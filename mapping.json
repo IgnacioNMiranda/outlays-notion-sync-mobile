@@ -58,6 +58,37 @@
           }
         }
       }
+    },
+    "Button": {
+      "appearances": {
+        "filled": {
+          "variantGroups": {
+            "status": {
+              "basic": {
+                "backgroundColor": "#FFF",
+                "state": {
+                  "disabled": {
+                    "backgroundColor": "#ccc"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Spinner": {
+      "appearances": {
+        "default": {
+          "variantGroups": {
+            "status": {
+              "primary": {
+                "borderColor": "text-disabled-color"
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
