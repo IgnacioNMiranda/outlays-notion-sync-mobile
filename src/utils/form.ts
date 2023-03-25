@@ -13,6 +13,7 @@ export interface FormData {
   tags: FieldData<IndexPath[]>
   price: FieldData<string>
   paymentMethod: FieldData<IndexPath>
+  installments: FieldData<string>
 }
 
 export const getUpdatedFormState = (formData: FormData) => {

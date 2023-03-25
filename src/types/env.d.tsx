@@ -4,4 +4,6 @@ declare module '@env' {
   export const NOTION_PAYMENT_METHOD_PROPERTY_KEY: string
   export const NOTION_DATABASE_ID: string
   export const OUTLAYS_API_URL: string
+  export const API_KEY: string
+  export const API_TOKEN: string
 }
