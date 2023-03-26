@@ -39,7 +39,8 @@ const titleStyles = StyleSheet.create({
 
 export const Main = () => {
   const colorScheme = Appearance.getColorScheme()
-  const isDarkTheme = colorScheme === 'dark'
+  //const isDarkTheme = colorScheme === 'dark'
+  const isDarkTheme = true
 
   const { fontsLoaded, onLayoutRootView } = useCustomFonts()
   if (!fontsLoaded) return null
@@ -50,7 +51,7 @@ export const Main = () => {
         onLayout={onLayoutRootView}
         style={StyleSheet.compose(
           mainStyles.container,
-          colorScheme === 'dark' ? darkMainStyles.container : lightMainStyles.container,
+          isDarkTheme ? darkMainStyles.container : lightMainStyles.container,
         )}
         level="1"
       >
@@ -58,7 +59,7 @@ export const Main = () => {
           barStyle={isDarkTheme ? 'light-content' : 'dark-content'}
           backgroundColor={isDarkTheme ? '#191919' : '#8FBAB0'}
         />
-        <Text style={titleStyles.container}>Outlays Notion Sync</Text>
+        <Text style={{ ...titleStyles.container, color: isDarkTheme ? 'white' : 'black' }}>Outlays Notion Sync</Text>
         <Form />
       </Layout>
     </ApplicationProvider>
