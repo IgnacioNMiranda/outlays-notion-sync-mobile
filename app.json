@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "outlays-notion-sync-mobile",
-    "slug": "outlays-notion-sync-mobile",
+    "name": "Outlays Notion Sync",
+    "slug": "outlays-notion-sync",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,14 +22,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ign_n.outlaysnotionsyncmobile"
+      "package": "com.ign_n.outlaysnotionsync"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "8bd4f4e1-2d04-4135-84b3-7fab11b878c6"
+        "projectId": "70c5218e-f89d-428c-9f9b-664acf0cca0a"
       }
     }
   }

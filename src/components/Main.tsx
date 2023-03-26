@@ -39,6 +39,7 @@ const titleStyles = StyleSheet.create({
 
 export const Main = () => {
   const colorScheme = Appearance.getColorScheme()
+  const isDarkTheme = colorScheme === 'dark'
 
   const { fontsLoaded, onLayoutRootView } = useCustomFonts()
   if (!fontsLoaded) return null
@@ -53,8 +54,11 @@ export const Main = () => {
         )}
         level="1"
       >
-        <StatusBar barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'} backgroundColor={'green'} />
-        <Text style={titleStyles.container}>Outlays Sync</Text>
+        <StatusBar
+          barStyle={isDarkTheme ? 'light-content' : 'dark-content'}
+          backgroundColor={isDarkTheme ? '#191919' : '#8FBAB0'}
+        />
+        <Text style={titleStyles.container}>Outlays Notion Sync</Text>
         <Form />
       </Layout>
     </ApplicationProvider>
