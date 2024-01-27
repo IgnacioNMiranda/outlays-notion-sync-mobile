@@ -13,3 +13,7 @@
 6. `<View>` does not support scrollling natively. Some components that allow this are `<FlatList>`,`<ScrollView>`.
 
 7. Styling properties that use units (fonts, margins, paddings) use the device native pixels.
+
+## Building Android App
+
+After running `yarn deploy:local:android`, we have to check the build details in the Expo Dev Site. Then when it finishes, we download the APK and install it in our phone.

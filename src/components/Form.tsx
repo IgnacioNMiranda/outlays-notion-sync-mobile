@@ -76,7 +76,7 @@ export const Form = () => {
   }
 
   const onPriceChange = (price: string) => {
-    const sanitizedPrice = price.match(/\d+/)
+    const sanitizedPrice = price.match(/^-?\d*$/)
     const finalPrice = (sanitizedPrice ?? '').toString()
     setValues({ ...values, price: { ...values.price, value: finalPrice, error: !finalPrice } })
   }
@@ -91,8 +91,6 @@ export const Form = () => {
   }
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-  if (isSubmitting) {
-  }
   const onSubmitPress = async (_e: GestureResponderEvent) => {
     const formState = getUpdatedFormState(values)
     setValues(formState.values)
