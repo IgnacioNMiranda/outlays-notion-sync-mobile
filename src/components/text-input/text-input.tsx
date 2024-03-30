@@ -1,7 +1,7 @@
-import { TextInputProps, View } from 'react-native'
-import { Input as InputKitten, Text } from '@ui-kitten/components'
+import { TextInputProps, View, StyleSheet } from 'react-native'
+import { Input as InputKitten } from '@ui-kitten/components'
+import { Text } from '../text/text'
 import { ErrorMessage } from '../error-message/error-message'
-import { useIsDarkTheme } from '../../hooks/use-is-dark-theme'
 import { styles } from './text-input.styles'
 
 export interface CustomTextInputProps extends TextInputProps {
@@ -22,23 +22,9 @@ export const TextInput = ({
   errorMessage = '',
   ...rest
 }: CustomTextInputProps) => {
-  const isDarkTheme = useIsDarkTheme()
-
   return (
-    <View style={rest.style}>
-      {label && (
-        <Text
-          style={{
-            color: isDarkTheme ? 'white' : 'black',
-            fontWeight: 'bold',
-            fontFamily: 'Sono',
-            fontSize: 15,
-            marginBottom: 5,
-          }}
-        >
-          {label} {required ? '(required)' : ''}
-        </Text>
-      )}
+    <View style={StyleSheet.compose(rest.style, { width: '100%', display: 'flex', flexDirection: 'column', gap: 4 })}>
+      {label && <Text fontWeight="bold" label={`${label} ${required ? '(required)' : ''}`} />}
       <InputKitten
         onChangeText={onChangeText}
         onChange={onChange}

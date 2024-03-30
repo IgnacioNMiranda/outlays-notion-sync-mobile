@@ -1,6 +1,7 @@
-import { Datepicker, Text } from '@ui-kitten/components'
-import { View, Appearance, StyleSheet, StyleProp, ViewStyle } from 'react-native'
+import { Datepicker } from '@ui-kitten/components'
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native'
 import { dateInputStyles } from './date-input.styles'
+import { Text } from '../text/text'
 
 export const DateInput = ({
   label = '',
@@ -15,24 +16,11 @@ export const DateInput = ({
   style?: StyleProp<ViewStyle>
   required?: boolean
 }) => {
-  const colorSchema = Appearance.getColorScheme()
   const styles = StyleSheet.compose(dateInputStyles.container, style)
 
   return (
     <View style={styles}>
-      {label && (
-        <Text
-          style={{
-            color: colorSchema === 'dark' ? 'white' : 'black',
-            fontWeight: 'bold',
-            fontFamily: 'Sono',
-            fontSize: 15,
-            marginBottom: 5,
-          }}
-        >
-          {label} {required ? '(required)' : ''}
-        </Text>
-      )}
+      {label && <Text fontWeight="bold" label={`${label} ${required ? '(required)' : ''}`} />}
       <Datepicker size="small" date={date} style={{ borderRadius: 3, backgroundColor: 'white' }} onSelect={onChange} />
     </View>
   )

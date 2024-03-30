@@ -1,4 +1,4 @@
-import { IndexPath, Button } from '@ui-kitten/components'
+import { Button } from '@ui-kitten/components'
 import { useState } from 'react'
 import { View, GestureResponderEvent, Alert, ScrollView } from 'react-native'
 import { useMutation, useQuery } from 'react-query'
@@ -145,6 +145,7 @@ export const CreateOutlayForm = () => {
             hasError={formData.installments.error}
           />
         )}
+        {/* @ts-ignore using Spinner as-is actually works */}
         <Button
           onPress={onSubmitPress}
           style={[submitButtonStyles.container]}

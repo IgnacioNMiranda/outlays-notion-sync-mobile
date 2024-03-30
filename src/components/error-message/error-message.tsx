@@ -1,4 +1,4 @@
-import { Text } from '@ui-kitten/components'
+import { Text } from '../text/text'
 
 export const ErrorMessage = ({
   show,
@@ -11,32 +11,8 @@ export const ErrorMessage = ({
 }) => {
   return (
     <>
-      {show && required && (
-        <Text
-          style={{
-            color: '#774430',
-            fontWeight: 'bold',
-            fontFamily: 'Sono',
-            fontSize: 15,
-            marginTop: 4,
-          }}
-        >
-          This field is required
-        </Text>
-      )}
-      {show && !required && customMessage && (
-        <Text
-          style={{
-            color: '#774430',
-            fontWeight: 'bold',
-            fontFamily: 'Sono',
-            fontSize: 15,
-            marginTop: 4,
-          }}
-        >
-          {customMessage}
-        </Text>
-      )}
+      {show && required && <Text color="#774430" fontWeight="bold" label="This field is required" />}
+      {show && !required && customMessage && <Text color="#774430" fontWeight="bold" label={customMessage} />}
     </>
   )
 }

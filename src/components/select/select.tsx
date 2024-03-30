@@ -1,11 +1,12 @@
-import { Select as SelectKitten, SelectProps as SelectKittenProps, SelectItem, Text } from '@ui-kitten/components'
+import { Select as SelectKitten, SelectProps as SelectKittenProps, SelectItem } from '@ui-kitten/components'
 import { useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ErrorMessage } from '../error-message/error-message'
 import { useIsDarkTheme } from '../../hooks/use-is-dark-theme'
+import { Text } from '../text/text'
 
 const selectStyles = StyleSheet.create({
-  container: {},
+  container: { width: '100%', display: 'flex', flexDirection: 'column', gap: 4 },
 })
 
 export interface SelectProps extends SelectKittenProps {
@@ -39,36 +40,22 @@ export const Select = ({
   }, [selectedIndex])
 
   return (
-    <>
-      {label && (
-        <Text
-          style={{
-            color: isDarkTheme ? 'white' : 'black',
-            fontWeight: 'bold',
-            fontFamily: 'Sono',
-            fontSize: 15,
-            marginBottom: 5,
-          }}
-        >
-          {label} {required ? '(required)' : ''}
-        </Text>
-      )}
-      <View style={[styles]}>
-        <SelectKitten
-          size="small"
-          status={!hasError ? 'basic' : 'danger'}
-          selectedIndex={selectedIndex}
-          multiSelect={multiSelect}
-          onSelect={onSelect}
-          placeholder={placeholder}
-          value={displayedValue}
-        >
-          {options.map((item, idx) => (
-            <SelectItem key={`${item}-${idx}`} title={item} />
-          ))}
-        </SelectKitten>
-        <ErrorMessage show={hasError} required={required} customMessage={errorMessage} />
-      </View>
-    </>
+    <View style={styles}>
+      {label && <Text label={`${label} ${required ? '(required)' : ''}`} fontWeight="bold" />}
+      <SelectKitten
+        size="small"
+        status={!hasError ? 'basic' : 'danger'}
+        selectedIndex={selectedIndex}
+        multiSelect={multiSelect}
+        onSelect={onSelect}
+        placeholder={placeholder}
+        value={displayedValue}
+      >
+        {options.map((item, idx) => (
+          <SelectItem key={`${item}-${idx}`} title={item} />
+        ))}
+      </SelectKitten>
+      <ErrorMessage show={hasError} required={required} customMessage={errorMessage} />
+    </View>
   )
 }
