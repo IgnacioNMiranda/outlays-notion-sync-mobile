@@ -19,25 +19,29 @@ export interface FormData {
 export const getUpdatedFormState = (formData: FormData) => {
   const newFormData = cloneDeep<FormData>(formData)
 
-  Object.keys(newFormData).forEach((key: keyof FormData) => {
-    if (newFormData[key].required) {
-      const isInvalidString = typeof newFormData[key].value === 'string' && !newFormData[key].value
+  Object.keys(newFormData).forEach((key) => {
+    const formKey = key as keyof FormData
+    if (newFormData[formKey].required) {
+      const isInvalidString = typeof newFormData[formKey].value === 'string' && !newFormData[formKey].value
       const isInvalidArray =
-        typeof newFormData[key].value === 'object' &&
-        Array.isArray(newFormData[key].value) &&
-        !(newFormData[key].value instanceof Date) &&
-        !(newFormData[key].value as IndexPath[]).length
-      const isUndefined = typeof newFormData[key].value === 'undefined'
+        typeof newFormData[formKey].value === 'object' &&
+        Array.isArray(newFormData[formKey].value) &&
+        !(newFormData[formKey].value instanceof Date) &&
+        !(newFormData[formKey].value as IndexPath[]).length
+      const isUndefined = typeof newFormData[formKey].value === 'undefined'
 
       if (isInvalidString || isInvalidArray || isUndefined) {
-        newFormData[key].error = true
+        newFormData[formKey].error = true
       }
     }
   })
 
   return {
-    hasErrors: Object.keys(formData).some((key: keyof FormData) => {
-      if (formData[key].required && !formData[key].value && typeof formData[key].value !== 'boolean') return true
+    hasErrors: Object.keys(formData).some((key) => {
+      const formKey = key as keyof FormData
+
+      if (formData[formKey].required && !formData[formKey].value && typeof formData[formKey].value !== 'boolean')
+        return true
     }),
     formData: newFormData,
   }

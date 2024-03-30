@@ -13,7 +13,7 @@ export const HomeScreen = () => {
   const { global, statusBar } = useGlobalStyle()
   const isDarkTheme = useIsDarkTheme()
 
-  const { data } = useQuery('spent-money', getSpentMoney)
+  const { data: spentMoney = 0 } = useQuery('spent-money', getSpentMoney)
 
   const { fontsLoaded, onLayoutRootView } = useCustomFonts()
   if (!fontsLoaded) return null
@@ -25,7 +25,7 @@ export const HomeScreen = () => {
         Remaining
       </Text>
       <Text style={{ ...titleStyles.container, color: isDarkTheme ? 'white' : 'black' }}>
-        {formatCurrency(Number(BASE_MONEY_VALUE ?? 0) - data)}
+        {formatCurrency(Number(BASE_MONEY_VALUE ?? 0) - spentMoney)}
       </Text>
     </Layout>
   )

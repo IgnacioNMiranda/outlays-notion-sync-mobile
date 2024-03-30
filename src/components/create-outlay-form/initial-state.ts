@@ -27,6 +27,7 @@ export const INITIAL_FORM_STATE: FormData = {
     error: false,
   },
   paymentMethod: {
+    // @ts-ignore
     value: undefined,
     required: true,
     error: false,

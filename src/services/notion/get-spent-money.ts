@@ -40,7 +40,7 @@ export const getSpentMoney = async () => {
       monthProperty.rollup.type === 'number' &&
       typeof monthProperty.rollup.number !== 'undefined'
     ) {
-      currentMonthSpentMoney = monthProperty.rollup.number
+      currentMonthSpentMoney = monthProperty.rollup.number ?? -1
     }
   }
 

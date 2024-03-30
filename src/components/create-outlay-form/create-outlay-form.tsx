@@ -44,7 +44,7 @@ export const CreateOutlayForm = () => {
     const formState = getUpdatedFormState(formData)
     setFormData(formState.formData)
 
-    if (!formState.hasErrors) {
+    if (!formState.hasErrors && !!data) {
       const date = formData.date.value.toISOString().split('T')[0]
 
       const body: CreateOutlayDTO = {
@@ -96,8 +96,9 @@ export const CreateOutlayForm = () => {
           style={{ marginBottom: 20 }}
         />
         <Select
-          onSelect={(tags: IndexPath[]) => {
-            setFormData({ ...formData, tags: { ...formData.tags, value: tags, error: !tags.length } })
+          onSelect={(tags) => {
+            if ('length' in tags)
+              setFormData({ ...formData, tags: { ...formData.tags, value: tags, error: !tags.length } })
           }}
           options={data?.tags ?? []}
           selectedIndex={formData.tags.value}
@@ -118,12 +119,13 @@ export const CreateOutlayForm = () => {
           hasError={formData.price.error}
         />
         <Select
-          onSelect={(paymentMethod: IndexPath) =>
-            setFormData({
-              ...formData,
-              paymentMethod: { ...formData.paymentMethod, value: paymentMethod, error: !paymentMethod },
-            })
-          }
+          onSelect={(paymentMethod) => {
+            if (!('length' in paymentMethod))
+              setFormData({
+                ...formData,
+                paymentMethod: { ...formData.paymentMethod, value: paymentMethod, error: !paymentMethod },
+              })
+          }}
           options={data?.paymentMethods ?? []}
           selectedIndex={formData.paymentMethod.value}
           style={{ marginBottom: 20, borderRadius: 2 }}
@@ -132,7 +134,7 @@ export const CreateOutlayForm = () => {
           hasError={formData.paymentMethod.error}
           required
         />
-        {formData.paymentMethod?.value && data.paymentMethods[formData.paymentMethod.value.row].includes('Credit') && (
+        {formData.paymentMethod?.value && data?.paymentMethods[formData.paymentMethod.value.row].includes('Credit') && (
           <TextInput
             value={formData.installments.value}
             label="Installments"
@@ -149,7 +151,7 @@ export const CreateOutlayForm = () => {
           activeOpacity={1}
           disabled={isSubmitting}
           status="basic"
-          accessoryLeft={isSubmitting && Spinner}
+          {...(isSubmitting ? { accessoryLeft: Spinner } : {})}
         >
           Submit
         </Button>
