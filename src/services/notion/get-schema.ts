@@ -1,14 +1,14 @@
 import { notionClient } from './client'
-import { NOTION_DATABASE_ID, NOTION_PAYMENT_METHOD_PROPERTY_KEY, NOTION_TAGS_PROPERTY_KEY } from '@env'
+import { NOTION_DATABASE_ID } from '@env'
 
-export const getData = async () => {
+export const getSchema = async () => {
   const tags: string[] = []
   const paymentMethods: string[] = []
 
   const data = await notionClient.databases.retrieve({ database_id: NOTION_DATABASE_ID })
   if (data && 'properties' in data) {
-    const tagsProperty = data.properties[NOTION_TAGS_PROPERTY_KEY]
-    const paymentMethodsProperty = data.properties[NOTION_PAYMENT_METHOD_PROPERTY_KEY]
+    const tagsProperty = data.properties.Tags
+    const paymentMethodsProperty = data.properties['Payment method']
     if (tagsProperty && 'multi_select' in tagsProperty) {
       tags.push(...tagsProperty.multi_select.options.map((option) => option.name))
     }
@@ -16,5 +16,6 @@ export const getData = async () => {
       paymentMethods.push(...paymentMethodsProperty.select.options.map((option) => option.name))
     }
   }
+
   return { tags, paymentMethods }
 }

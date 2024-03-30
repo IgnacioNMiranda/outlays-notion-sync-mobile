@@ -2,7 +2,7 @@ import { IndexPath, Button } from '@ui-kitten/components'
 import { useState } from 'react'
 import { View, GestureResponderEvent, Alert, ScrollView } from 'react-native'
 import { useMutation, useQuery } from 'react-query'
-import { getData } from '../../services/notion/common'
+import { getSchema } from '../../services/notion/get-schema'
 import { DateInput } from '../date-input/date-input'
 import { TextInput } from '../text-input/text-input'
 import { Select } from '../select/select'
@@ -15,7 +15,7 @@ import { formStyles, inputStyles, submitButtonStyles } from './create-outlay-for
 
 export const CreateOutlayForm = () => {
   const createOutlayMutation = useMutation('create-outlay', createOutlay)
-  const { data } = useQuery('data', getData)
+  const { data } = useQuery('data', getSchema)
 
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM_STATE)
 
