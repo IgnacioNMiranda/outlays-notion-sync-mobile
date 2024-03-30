@@ -1,6 +1,7 @@
 {
   "components": {
     "Select": {
+      "meta": {},
       "appearances": {
         "default": {
           "variantGroups": {
@@ -36,6 +37,7 @@
       }
     },
     "CheckBox": {
+      "meta": {},
       "appearances": {
         "default": {
           "variantGroups": {
@@ -60,6 +62,7 @@
       }
     },
     "Button": {
+      "meta": {},
       "appearances": {
         "filled": {
           "variantGroups": {
@@ -78,6 +81,7 @@
       }
     },
     "Spinner": {
+      "meta": {},
       "appearances": {
         "default": {
           "variantGroups": {

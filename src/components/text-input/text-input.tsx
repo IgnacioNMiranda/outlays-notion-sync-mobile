@@ -1,26 +1,17 @@
-import { StyleSheet, TextInputProps, Appearance, View } from 'react-native'
+import { TextInputProps, View } from 'react-native'
 import { Input as InputKitten, Text } from '@ui-kitten/components'
-import { ErrorMessage } from './ErrorMessage'
+import { ErrorMessage } from '../error-message/error-message'
+import { useIsDarkTheme } from '../../hooks/use-is-dark-theme'
+import { styles } from './text-input.styles'
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    borderRadius: 3,
-  },
-  error: {
-    borderColor: '#774430',
-  },
-  normal: {},
-})
-
-export interface InputProps extends TextInputProps {
+export interface CustomTextInputProps extends TextInputProps {
   label?: string
   hasError?: boolean
   required?: boolean
   errorMessage?: string
 }
 
-export const Input = ({
+export const TextInput = ({
   label = '',
   value,
   onChangeText,
@@ -30,15 +21,15 @@ export const Input = ({
   required = false,
   errorMessage = '',
   ...rest
-}: InputProps) => {
-  const colorSchema = Appearance.getColorScheme()
+}: CustomTextInputProps) => {
+  const isDarkTheme = useIsDarkTheme()
 
   return (
     <View style={rest.style}>
       {label && (
         <Text
           style={{
-            color: colorSchema === 'dark' ? 'white' : 'black',
+            color: isDarkTheme ? 'white' : 'black',
             fontWeight: 'bold',
             fontFamily: 'Sono',
             fontSize: 15,

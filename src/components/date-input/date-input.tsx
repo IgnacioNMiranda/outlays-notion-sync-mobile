@@ -1,9 +1,6 @@
 import { Datepicker, Text } from '@ui-kitten/components'
 import { View, Appearance, StyleSheet, StyleProp, ViewStyle } from 'react-native'
-
-const dateInputStyles = StyleSheet.create({
-  container: {},
-})
+import { dateInputStyles } from './date-input.styles'
 
 export const DateInput = ({
   label = '',

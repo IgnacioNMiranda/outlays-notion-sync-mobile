@@ -39,17 +39,6 @@ export const getUpdatedFormState = (formData: FormData) => {
     hasErrors: Object.keys(formData).some((key: keyof FormData) => {
       if (formData[key].required && !formData[key].value && typeof formData[key].value !== 'boolean') return true
     }),
-    values: newFormData,
+    formData: newFormData,
   }
-}
-
-export const resetForm = (formData: FormData, initialState: FormData) => {
-  const newFormData = cloneDeep<FormData>(formData)
-
-  Object.keys(formData).forEach((key: keyof FormData) => {
-    newFormData[key].value = initialState[key].value
-    newFormData[key].error = initialState[key].error
-  })
-
-  return newFormData
 }

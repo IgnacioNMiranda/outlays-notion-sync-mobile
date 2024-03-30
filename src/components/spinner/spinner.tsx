@@ -1,12 +1,6 @@
 import { Spinner as KittenSpinner, SpinnerProps } from '@ui-kitten/components'
-import { StyleSheet, View } from 'react-native'
-
-const spinnerStyles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-})
+import { View } from 'react-native'
+import { spinnerStyles } from './spinner.styles'
 
 export const Spinner = ({ size = 'small' }: SpinnerProps) => {
   return (

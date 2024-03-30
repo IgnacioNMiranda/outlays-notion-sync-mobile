@@ -5,7 +5,6 @@ module.exports = {
     'react-native/react-native': true,
   },
   extends: ['plugin:react/recommended', 'standard-with-typescript', 'prettier'],
-  overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
@@ -14,5 +13,15 @@ module.exports = {
     },
   },
   plugins: ['react', 'react-native'],
-  rules: {},
+  rules: {
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
+  },
+  overrides: [],
 }

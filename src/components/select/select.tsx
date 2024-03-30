@@ -1,7 +1,8 @@
 import { Select as SelectKitten, SelectProps as SelectKittenProps, SelectItem, Text } from '@ui-kitten/components'
 import { useMemo } from 'react'
-import { StyleSheet, Appearance, View } from 'react-native'
-import { ErrorMessage } from './ErrorMessage'
+import { StyleSheet, View } from 'react-native'
+import { ErrorMessage } from '../error-message/error-message'
+import { useIsDarkTheme } from '../../hooks/use-is-dark-theme'
 
 const selectStyles = StyleSheet.create({
   container: {},
@@ -27,7 +28,7 @@ export const Select = ({
   required = false,
   errorMessage = '',
 }: SelectProps) => {
-  const colorSchema = Appearance.getColorScheme()
+  const isDarkTheme = useIsDarkTheme()
   const styles = StyleSheet.compose(selectStyles.container, style)
 
   const displayedValue = useMemo(() => {
@@ -42,7 +43,7 @@ export const Select = ({
       {label && (
         <Text
           style={{
-            color: colorSchema === 'dark' ? 'white' : 'black',
+            color: isDarkTheme ? 'white' : 'black',
             fontWeight: 'bold',
             fontFamily: 'Sono',
             fontSize: 15,
