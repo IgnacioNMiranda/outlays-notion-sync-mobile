@@ -29,7 +29,8 @@ export const TextInput = ({
         onChangeText={onChangeText}
         onChange={onChange}
         size="small"
-        style={[styles.container, hasError ? styles.error : styles.normal]}
+        style={[styles.container]}
+        status={!hasError ? 'basic' : 'danger'}
         value={value}
         keyboardType={keyboardType}
       />

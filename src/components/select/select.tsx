@@ -2,7 +2,6 @@ import { Select as SelectKitten, SelectProps as SelectKittenProps, SelectItem } 
 import { useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ErrorMessage } from '../error-message/error-message'
-import { useIsDarkTheme } from '../../hooks/use-is-dark-theme'
 import { Text } from '../text/text'
 
 const selectStyles = StyleSheet.create({
@@ -29,7 +28,6 @@ export const Select = ({
   required = false,
   errorMessage = '',
 }: SelectProps) => {
-  const isDarkTheme = useIsDarkTheme()
   const styles = StyleSheet.compose(selectStyles.container, style)
 
   const displayedValue = useMemo(() => {

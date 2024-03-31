@@ -1,18 +1,22 @@
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { mapping } from '@eva-design/eva'
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
 import { NavigationContainer } from '@react-navigation/native'
 import * as eva from '@eva-design/eva'
+import { default as theme } from './theme.json' // <-- Import app theme
 import { TabNavigator } from './src/components/tab-navigator/tab-navigator'
 import { EvaIconsPack } from '@ui-kitten/eva-icons'
+import { Appearance } from 'react-native'
 
 const queryClient = new QueryClient()
 
 export default function App() {
+  const colorScheme = Appearance.getColorScheme()
+  const evaTheme = colorScheme === 'dark' ? eva.dark : eva.light
+
   return (
     <QueryClientProvider client={queryClient}>
       <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={eva.light} customMapping={mapping}>
+      <ApplicationProvider {...eva} theme={{ ...evaTheme, ...theme }}>
         <NavigationContainer>
           <TabNavigator />
         </NavigationContainer>

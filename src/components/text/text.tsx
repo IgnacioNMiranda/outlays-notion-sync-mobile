@@ -1,5 +1,5 @@
 import { Text as KittenText } from '@ui-kitten/components'
-import { useIsDarkTheme } from '../../hooks/use-is-dark-theme'
+import { EvaStatus } from '@ui-kitten/components/devsupport'
 import { TextStyle } from 'react-native'
 
 type TextSize = 'regular' | 'big' | 'bigger'
@@ -12,21 +12,19 @@ const sizeStyles: Record<TextSize, TextStyle['fontSize']> = {
 
 export const Text = ({
   label,
-  color,
   fontWeight = '400',
   size = 'regular',
+  status = 'basic',
 }: {
   label: string
-  color?: string
   fontWeight?: TextStyle['fontWeight']
   size?: TextSize
+  status?: EvaStatus
 }) => {
-  const isDarkTheme = useIsDarkTheme()
-
   return (
     <KittenText
+      status={status}
       style={{
-        color: color ?? (isDarkTheme ? 'white' : 'black'),
         fontWeight,
         fontFamily: 'Sono',
         fontSize: sizeStyles[size],

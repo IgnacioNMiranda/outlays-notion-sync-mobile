@@ -21,7 +21,7 @@ export const DateInput = ({
   return (
     <View style={styles}>
       {label && <Text fontWeight="bold" label={`${label} ${required ? '(required)' : ''}`} />}
-      <Datepicker size="small" date={date} style={{ borderRadius: 3, backgroundColor: 'white' }} onSelect={onChange} />
+      <Datepicker size="small" date={date} style={{ borderRadius: 3 }} onSelect={onChange} />
     </View>
   )
 }

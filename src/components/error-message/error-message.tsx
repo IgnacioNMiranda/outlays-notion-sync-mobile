@@ -11,8 +11,8 @@ export const ErrorMessage = ({
 }) => {
   return (
     <>
-      {show && required && <Text color="#774430" fontWeight="bold" label="This field is required" />}
-      {show && !required && customMessage && <Text color="#774430" fontWeight="bold" label={customMessage} />}
+      {show && required && <Text status="danger" fontWeight="bold" label="This field is required" />}
+      {show && !required && customMessage && <Text status="danger" fontWeight="bold" label={customMessage} />}
     </>
   )
 }
