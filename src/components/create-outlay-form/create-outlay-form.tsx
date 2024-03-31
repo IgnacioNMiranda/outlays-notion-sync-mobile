@@ -1,7 +1,7 @@
 import { Button } from '@ui-kitten/components'
 import { useState } from 'react'
 import { View, GestureResponderEvent, Alert, ScrollView } from 'react-native'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { getSchema } from '../../services/notion/get-schema'
 import { DateInput } from '../date-input/date-input'
 import { TextInput } from '../text-input/text-input'
@@ -16,6 +16,7 @@ import { formStyles, inputStyles, submitButtonStyles } from './create-outlay-for
 export const CreateOutlayForm = () => {
   const createOutlayMutation = useMutation('create-outlay', createOutlay)
   const { data } = useQuery('data', getSchema)
+  const queryClient = useQueryClient()
 
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM_STATE)
 
@@ -64,6 +65,13 @@ export const CreateOutlayForm = () => {
         if (outlayData.data) {
           Alert.alert(`'${body.name}' outlay submitted!`)
           setFormData(INITIAL_FORM_STATE)
+
+          // refetch outlay entries list
+          await queryClient.invalidateQueries({
+            queryKey: ['outlay-entries'],
+            refetchActive: true,
+            refetchInactive: true,
+          })
         } else {
           Alert.alert(`'${outlayData.error}'. Try again later.`)
         }

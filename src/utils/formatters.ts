@@ -1,7 +1,9 @@
 export const formatCurrency = (num: number) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'CLP',
     currencyDisplay: 'symbol',
-  }).format(num)
+  })
+    .format(num)
+    .replace(/CLP\s{1}/, '$')
 }

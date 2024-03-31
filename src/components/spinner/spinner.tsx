@@ -5,7 +5,7 @@ import { spinnerStyles } from './spinner.styles'
 export const Spinner = (props: SpinnerProps) => {
   return (
     <View style={[spinnerStyles.container]}>
-      <KittenSpinner status="basic" size={props?.size ?? 'small'} />
+      <KittenSpinner status={props.status ?? 'basic'} size={props?.size ?? 'small'} />
     </View>
   )
 }
