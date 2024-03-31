@@ -6,13 +6,13 @@ import { useCustomFonts } from '../../hooks/use-custom-fonts'
 
 const { Navigator, Screen } = createBottomTabNavigator()
 
-const HomeIcon: BottomNavigationTabProps['icon'] = (props) => <Icon {...props} name="home-outline" />
-const NewOutlayIcon: BottomNavigationTabProps['icon'] = (props) => <Icon {...props} name="plus-outline" />
+const BookIcon: BottomNavigationTabProps['icon'] = (props) => <Icon {...props} name="book-open-outline" />
+const PlusIcon: BottomNavigationTabProps['icon'] = (props) => <Icon {...props} name="plus-outline" />
 
 const BottomTabBar = ({ navigation, state }: BottomTabBarProps) => (
   <BottomNavigation selectedIndex={state.index} onSelect={(index) => navigation.navigate(state.routeNames[index])}>
-    <BottomNavigationTab title="HOME" icon={HomeIcon} />
-    <BottomNavigationTab title="NEW OUTLAY" icon={NewOutlayIcon} />
+    <BottomNavigationTab title="NEW OUTLAY" icon={PlusIcon} />
+    <BottomNavigationTab title="MY OUTLAYS" icon={BookIcon} />
   </BottomNavigation>
 )
 
@@ -22,8 +22,16 @@ export const TabNavigator = () => {
 
   return (
     <Navigator screenOptions={{ headerShown: false }} tabBar={(props) => <BottomTabBar {...props} />}>
-      <Screen name="Home" component={HomeScreen} options={{ tabBarShowLabel: false, tabBarHideOnKeyboard: true }} />
-      <Screen name="New Outlay" component={NewOutlayScreen} />
+      <Screen
+        name="New Outlay"
+        component={NewOutlayScreen}
+        options={{ tabBarShowLabel: false, tabBarHideOnKeyboard: true }}
+      />
+      <Screen
+        name="My Outlays"
+        component={HomeScreen}
+        options={{ tabBarShowLabel: false, tabBarHideOnKeyboard: true }}
+      />
     </Navigator>
   )
 }
