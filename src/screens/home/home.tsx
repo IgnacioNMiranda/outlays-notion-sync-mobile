@@ -1,5 +1,5 @@
 import { Layout } from '@ui-kitten/components'
-import { StatusBar, View } from 'react-native'
+import { StatusBar, Alert, View } from 'react-native'
 import { useCustomFonts } from '../../hooks/use-custom-fonts'
 import { useGlobalStyle } from '../../hooks/use-global-style'
 import { formatCurrency } from '../../utils/formatters'
@@ -10,6 +10,7 @@ import { BASE_MONEY_VALUE } from '@env'
 import { Spinner } from '../../components/spinner/spinner'
 import { getOutlayEntries } from '../../services/notion/get-outlay-entries'
 import { OutlaysList } from '../../components/outlays-list/outlays-list'
+import { useEffect } from 'react'
 
 export const HomeScreen = () => {
   const { global, statusBar } = useGlobalStyle()
@@ -20,11 +21,19 @@ export const HomeScreen = () => {
     isLoading: spentMoneyLoading,
   } = useQuery('spent-money', getSpentMoney)
 
+  useEffect(() => {
+    if (spentMoneyError) Alert.alert(`Error fetching Spent Money`)
+  }, [spentMoneyError])
+
   const {
     data: outlayEntries,
     isError: outlayEntriesError,
     isLoading: outlayEntriesLoading,
   } = useQuery('outlay-entries', getOutlayEntries)
+
+  useEffect(() => {
+    if (outlayEntriesError) Alert.alert(`Error fetching Outlay Entries`)
+  }, [spentMoneyError])
 
   const remainingMoney = Number(BASE_MONEY_VALUE ?? 0) - spentMoney
 
