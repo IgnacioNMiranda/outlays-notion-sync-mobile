@@ -1,6 +1,6 @@
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { BottomNavigation, BottomNavigationTab, BottomNavigationTabProps, Icon } from '@ui-kitten/components'
-import { HomeScreen } from '../../screens/home/home'
+import { MyOutlaysScreen } from '../../screens/my-outlays/my-outlays'
 import { NewOutlayScreen } from '../../screens/new-outlay/new-outlay'
 import { useCustomFonts } from '../../hooks/use-custom-fonts'
 
@@ -29,7 +29,7 @@ export const TabNavigator = () => {
       />
       <Screen
         name="My Outlays"
-        component={HomeScreen}
+        component={MyOutlaysScreen}
         options={{ tabBarShowLabel: false, tabBarHideOnKeyboard: true }}
       />
     </Navigator>

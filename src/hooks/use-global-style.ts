@@ -1,6 +1,8 @@
 import { StatusBarStyle, StyleSheet } from 'react-native'
+import { useIsDarkTheme } from './use-is-dark-theme'
 
 export const useGlobalStyle = () => {
+  const isDarkTheme = useIsDarkTheme()
   return {
     global: StyleSheet.compose(
       {
@@ -14,7 +16,7 @@ export const useGlobalStyle = () => {
       {},
     ),
     statusBar: {
-      barStyle: 'light-content' as StatusBarStyle,
+      barStyle: (isDarkTheme ? 'light-content ' : 'dark-content') as StatusBarStyle,
     },
   }
 }

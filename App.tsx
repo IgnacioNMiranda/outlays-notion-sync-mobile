@@ -5,13 +5,13 @@ import * as eva from '@eva-design/eva'
 import { default as theme } from './theme.json' // <-- Import app theme
 import { TabNavigator } from './src/components/tab-navigator/tab-navigator'
 import { EvaIconsPack } from '@ui-kitten/eva-icons'
-import { Appearance } from 'react-native'
+import { useIsDarkTheme } from './src/hooks/use-is-dark-theme'
 
 const queryClient = new QueryClient()
 
 export default function App() {
-  const colorScheme = Appearance.getColorScheme()
-  const evaTheme = colorScheme === 'dark' ? eva.dark : eva.light
+  const isDarkTheme = useIsDarkTheme()
+  const evaTheme = isDarkTheme ? eva.dark : eva.light
 
   return (
     <QueryClientProvider client={queryClient}>

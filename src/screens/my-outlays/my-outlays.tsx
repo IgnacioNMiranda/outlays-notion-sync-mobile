@@ -12,7 +12,7 @@ import { getOutlayEntries } from '../../services/notion/get-outlay-entries'
 import { OutlaysList } from '../../components/outlays-list/outlays-list'
 import { useEffect } from 'react'
 
-export const HomeScreen = () => {
+export const MyOutlaysScreen = () => {
   const { global, statusBar } = useGlobalStyle()
 
   const {
@@ -52,7 +52,16 @@ export const HomeScreen = () => {
   return (
     <Layout onLayout={onLayoutRootView} style={[global]} level="1">
       <StatusBar {...statusBar} />
-      <View style={{ display: 'flex', width: '100%', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+      <View
+        style={{
+          display: 'flex',
+          width: '100%',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 10,
+          paddingBottom: 20,
+        }}
+      >
         <Text size="big" label="Remaining Money" />
         {(spentMoneyLoading || outlayEntriesLoading) && <Spinner status="primary" size="medium" />}
         {!spentMoneyLoading && !spentMoneyError && (

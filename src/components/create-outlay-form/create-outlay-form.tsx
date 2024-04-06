@@ -65,19 +65,27 @@ export const CreateOutlayForm = () => {
         if (outlayData.data) {
           Alert.alert(`'${body.name}' outlay submitted!`)
           setFormData(INITIAL_FORM_STATE)
+          setIsSubmitting(false)
 
-          // refetch outlay entries list
-          await queryClient.invalidateQueries({
-            queryKey: ['outlay-entries'],
-            refetchActive: true,
-            refetchInactive: true,
-          })
+          // refetch outlay data
+          await Promise.all([
+            queryClient.invalidateQueries({
+              queryKey: ['outlay-entries'],
+              refetchActive: true,
+              refetchInactive: true,
+            }),
+            queryClient.invalidateQueries({
+              queryKey: ['spent-money'],
+              refetchActive: true,
+              refetchInactive: true,
+            }),
+          ])
         } else {
           Alert.alert(`'${outlayData.error}'. Try again later.`)
+          setIsSubmitting(false)
         }
       } catch (error) {
         if (error instanceof Error) Alert.alert(`'${error.message}'. Try again later.`)
-      } finally {
         setIsSubmitting(false)
       }
     }
