@@ -1,5 +1,5 @@
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { BottomNavigation, BottomNavigationTab, BottomNavigationTabProps, Icon } from '@ui-kitten/components'
+import { BottomNavigation, BottomNavigationTab, BottomNavigationTabProps, Icon, useTheme } from '@ui-kitten/components'
 import { MyOutlaysScreen } from '../../screens/my-outlays/my-outlays'
 import { NewOutlayScreen } from '../../screens/new-outlay/new-outlay'
 import { useCustomFonts } from '../../hooks/use-custom-fonts'
@@ -18,10 +18,18 @@ const BottomTabBar = ({ navigation, state }: BottomTabBarProps) => (
 
 export const TabNavigator = () => {
   const { fontsLoaded } = useCustomFonts()
+  const theme = useTheme()
+
   if (!fontsLoaded) return null
 
   return (
-    <Navigator screenOptions={{ headerShown: false }} tabBar={(props) => <BottomTabBar {...props} />}>
+    <Navigator
+      screenOptions={{ headerShown: false }}
+      sceneContainerStyle={{
+        backgroundColor: theme['background-basic-color-1'],
+      }}
+      tabBar={(props) => <BottomTabBar {...props} />}
+    >
       <Screen
         name="New Outlay"
         component={NewOutlayScreen}

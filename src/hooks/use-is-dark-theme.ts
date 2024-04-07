@@ -1,6 +1,6 @@
-import { Appearance } from 'react-native'
+import { useColorScheme } from 'react-native'
 
 export const useIsDarkTheme = () => {
-  const colorScheme = Appearance.getColorScheme()
+  const colorScheme = useColorScheme()
   return colorScheme === 'dark'
 }
