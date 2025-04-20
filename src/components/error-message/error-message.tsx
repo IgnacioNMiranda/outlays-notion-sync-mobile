@@ -1,4 +1,4 @@
-import { Text } from '../text'
+import { CustomText } from '../custom-text'
 
 export const ErrorMessage = ({
   show,
@@ -11,8 +11,8 @@ export const ErrorMessage = ({
 }) => {
   return (
     <>
-      {show && required && <Text status="danger" fontWeight="bold" label="This field is required" />}
-      {show && !required && customMessage && <Text status="danger" fontWeight="bold" label={customMessage} />}
+      {show && required && <CustomText status="danger" fontWeight="bold" label="This field is required" />}
+      {show && !required && customMessage && <CustomText status="danger" fontWeight="bold" label={customMessage} />}
     </>
   )
 }

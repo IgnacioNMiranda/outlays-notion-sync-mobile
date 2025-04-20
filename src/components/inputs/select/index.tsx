@@ -2,7 +2,7 @@ import { Select as SelectKitten, SelectProps as SelectKittenProps, SelectItem } 
 import { useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { ErrorMessage } from '../../error-message/error-message'
-import { Text } from '../../text'
+import { CustomText } from '../../custom-text'
 
 const selectStyles = StyleSheet.create({
   container: { width: '100%', display: 'flex', flexDirection: 'column', gap: 4 },
@@ -39,7 +39,7 @@ export const Select = ({
 
   return (
     <View style={styles}>
-      {label && <Text label={`${label} ${required ? '(required)' : ''}`} fontWeight="bold" />}
+      {label && <CustomText label={`${label} ${required ? '(required)' : ''}`} fontWeight="bold" />}
       <SelectKitten
         size="small"
         status={!hasError ? 'basic' : 'danger'}

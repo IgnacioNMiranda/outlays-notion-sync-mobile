@@ -5,7 +5,7 @@ import { useSpentMoney } from '../../../../hooks/data/use-spent-money'
 import { useCustomFonts } from '../../../../hooks/utils/use-custom-fonts'
 import { useGlobalStyle } from '../../../../hooks/utils/use-global-style'
 import { OutlaysList } from '../../../outlays-list/outlays-list'
-import { Text } from '../../../text'
+import { CustomText } from '../../../custom-text'
 
 export const MyOutlaysScreen = () => {
   const { global, statusBar } = useGlobalStyle()
@@ -29,10 +29,10 @@ export const MyOutlaysScreen = () => {
           paddingBottom: 20,
         }}
       >
-        <Text size="big" label="Remaining Money" />
+        <CustomText size="big" label="Remaining Money" />
         {(spentMoneyLoading || outlaysLoading) && <Spinner status="primary" size="medium" />}
         {!spentMoneyLoading && !spentMoneyError && (
-          <Text size="bigger" fontWeight="bold" status={moneyStatus} label={formattedMoney} />
+          <CustomText size="bigger" fontWeight="bold" status={moneyStatus} label={formattedMoney} />
         )}
         {!outlaysLoading && !outlaysError && outlays && <OutlaysList outlays={outlays} />}
       </View>

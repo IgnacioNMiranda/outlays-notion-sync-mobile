@@ -1,6 +1,6 @@
 import { TextInputProps, View, StyleSheet } from 'react-native'
 import { Input as InputKitten } from '@ui-kitten/components'
-import { Text } from '../../text'
+import { CustomText } from '../../custom-text'
 import { ErrorMessage } from '../../error-message/error-message'
 import { styles } from './text-input.styles'
 
@@ -24,7 +24,7 @@ export const TextInput = ({
 }: CustomTextInputProps) => {
   return (
     <View style={StyleSheet.compose(rest.style, { width: '100%', display: 'flex', flexDirection: 'column', gap: 4 })}>
-      {label && <Text fontWeight="bold" label={`${label} ${required ? '(required)' : ''}`} />}
+      {label && <CustomText fontWeight="bold" label={`${label} ${required ? '(required)' : ''}`} />}
       <InputKitten
         onChangeText={onChangeText}
         onChange={onChange}

@@ -10,7 +10,7 @@ const sizeStyles: Record<TextSize, TextStyle['fontSize']> = {
   bigger: 26,
 }
 
-export const Text = ({
+export const CustomText = ({
   label,
   fontWeight = '400',
   size = 'regular',

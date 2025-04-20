@@ -1,7 +1,7 @@
 import { Datepicker } from '@ui-kitten/components'
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native'
 import { dateInputStyles } from './date-input.styles'
-import { Text } from '../../text'
+import { CustomText } from '../../custom-text'
 
 export const DateInput = ({
   label = '',
@@ -20,7 +20,7 @@ export const DateInput = ({
 
   return (
     <View style={styles}>
-      {label && <Text fontWeight="bold" label={`${label} ${required ? '(required)' : ''}`} />}
+      {label && <CustomText fontWeight="bold" label={`${label} ${required ? '(required)' : ''}`} />}
       <Datepicker size="small" date={date} style={{ borderRadius: 3 }} onSelect={onChange} />
     </View>
   )
