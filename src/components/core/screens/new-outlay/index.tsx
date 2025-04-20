@@ -1,9 +1,9 @@
 import { Layout } from '@ui-kitten/components'
 import { StatusBar, View } from 'react-native'
-import { useCustomFonts } from '../../hooks/use-custom-fonts'
-import { CreateOutlayForm } from '../../components/create-outlay-form/create-outlay-form'
-import { Text } from '../../components/text/text'
-import { useGlobalStyle } from '../../hooks/use-global-style'
+import { useCustomFonts } from '../../../../hooks/utils/use-custom-fonts'
+import { useGlobalStyle } from '../../../../hooks/utils/use-global-style'
+import { CreateOutlayForm } from '../../../forms/create-outlay-form'
+import { Text } from '../../../text'
 
 export const NewOutlayScreen = () => {
   const { global, statusBar } = useGlobalStyle()

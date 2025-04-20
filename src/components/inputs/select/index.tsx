@@ -1,8 +1,8 @@
 import { Select as SelectKitten, SelectProps as SelectKittenProps, SelectItem } from '@ui-kitten/components'
 import { useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { ErrorMessage } from '../error-message/error-message'
-import { Text } from '../text/text'
+import { ErrorMessage } from '../../error-message/error-message'
+import { Text } from '../../text'
 
 const selectStyles = StyleSheet.create({
   container: { width: '100%', display: 'flex', flexDirection: 'column', gap: 4 },

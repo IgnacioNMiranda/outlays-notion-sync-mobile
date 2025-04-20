@@ -1,6 +1,6 @@
-import { FormData } from '../../utils/form'
+import { CreateOutlayFormData } from '../../../utils/form'
 
-export const INITIAL_FORM_STATE: FormData = {
+export const INITIAL_FORM_STATE: CreateOutlayFormData = {
   name: {
     value: '',
     required: true,

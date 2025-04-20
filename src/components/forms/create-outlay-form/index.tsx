@@ -1,24 +1,25 @@
-import { Button } from '@ui-kitten/components'
 import { useState } from 'react'
 import { View, GestureResponderEvent, Alert, ScrollView } from 'react-native'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { getSchema } from '../../services/notion/get-schema'
-import { DateInput } from '../date-input/date-input'
-import { TextInput } from '../text-input/text-input'
-import { Select } from '../select/select'
-import { FormData, getUpdatedFormState } from '../../utils/form'
-import { CreateOutlayDTO } from '../../dtos/create-outlay-dto'
-import { createOutlay } from '../../services/outlays/create-outlay'
-import { Spinner } from '../spinner/spinner'
+import { Button } from '@ui-kitten/components'
+
 import { INITIAL_FORM_STATE } from './initial-state'
 import { formStyles, inputStyles, submitButtonStyles } from './create-outlay-form.styles'
+import { useOutlaySchema } from '../../../hooks/data/use-outlays-schema'
+import { CreateOutlayDTO } from '../../../dtos/create-outlay-dto'
+import { useCreateOutlay } from '../../../hooks/data/use-create-outlay'
+import { useInvalidateData } from '../../../hooks/data/use-invalidate-data'
+import { CreateOutlayFormData, getUpdatedFormState } from '../../../utils/form'
+import { DateInput } from '../../inputs/date-input'
+import { TextInput } from '../../inputs/text-input'
+import { Spinner } from '../../spinner'
+import { Select } from '../../inputs/select'
 
 export const CreateOutlayForm = () => {
-  const createOutlayMutation = useMutation('create-outlay', createOutlay)
-  const { data } = useQuery('data', getSchema)
-  const queryClient = useQueryClient()
+  const { createOutlay } = useCreateOutlay()
+  const { availableTags, availablePaymentMethods } = useOutlaySchema()
+  const { invalidateOutlays, invalidateSpentMoney } = useInvalidateData()
 
-  const [formData, setFormData] = useState<FormData>(INITIAL_FORM_STATE)
+  const [formData, setFormData] = useState<CreateOutlayFormData>(INITIAL_FORM_STATE)
 
   const onDateChange = (selectedDate: Date) => {
     setFormData({ ...formData, date: { ...formData.date, value: selectedDate } })
@@ -45,22 +46,22 @@ export const CreateOutlayForm = () => {
     const formState = getUpdatedFormState(formData)
     setFormData(formState.formData)
 
-    if (!formState.hasErrors && !!data) {
+    if (!formState.hasErrors && !!availableTags && !!availablePaymentMethods) {
       const date = formData.date.value.toISOString().split('T')[0]
 
       const body: CreateOutlayDTO = {
         name: formData.name.value,
         date,
-        tags: formData.tags.value.map((tagIndex) => data.tags[tagIndex.row]),
+        tags: formData.tags.value.map((tagIndex) => availableTags[tagIndex.row]),
         price: Number(formData.price.value),
-        paymentMethod: formData.paymentMethod?.value && data.paymentMethods[formData.paymentMethod.value.row],
+        paymentMethod: formData.paymentMethod?.value && availablePaymentMethods[formData.paymentMethod.value.row],
         installments: Number(formData.installments.value),
       }
 
       try {
         setIsSubmitting(true)
 
-        const outlayData = await createOutlayMutation.mutateAsync(body)
+        const outlayData = await createOutlay(body)
 
         if (outlayData.data) {
           Alert.alert(`'${body.name}' outlay submitted!`)
@@ -68,18 +69,7 @@ export const CreateOutlayForm = () => {
           setIsSubmitting(false)
 
           // refetch outlay data
-          await Promise.all([
-            queryClient.invalidateQueries({
-              queryKey: ['outlay-entries'],
-              refetchActive: true,
-              refetchInactive: true,
-            }),
-            queryClient.invalidateQueries({
-              queryKey: ['spent-money'],
-              refetchActive: true,
-              refetchInactive: true,
-            }),
-          ])
+          await Promise.all([invalidateOutlays(), invalidateSpentMoney()])
         } else {
           Alert.alert(`'${outlayData.error}'. Try again later.`)
           setIsSubmitting(false)
@@ -116,7 +106,7 @@ export const CreateOutlayForm = () => {
             if ('length' in tags)
               setFormData({ ...formData, tags: { ...formData.tags, value: tags, error: !tags.length } })
           }}
-          options={data?.tags ?? []}
+          options={availableTags ?? []}
           selectedIndex={formData.tags.value}
           style={{ marginBottom: 20, borderRadius: 2 }}
           label="Tags"
@@ -142,7 +132,7 @@ export const CreateOutlayForm = () => {
                 paymentMethod: { ...formData.paymentMethod, value: paymentMethod, error: !paymentMethod },
               })
           }}
-          options={data?.paymentMethods ?? []}
+          options={availablePaymentMethods ?? []}
           selectedIndex={formData.paymentMethod.value}
           style={{ marginBottom: 20, borderRadius: 2 }}
           label="Payment Method"
@@ -150,17 +140,18 @@ export const CreateOutlayForm = () => {
           hasError={formData.paymentMethod.error}
           required
         />
-        {formData.paymentMethod?.value && data?.paymentMethods[formData.paymentMethod.value.row].includes('Credit') && (
-          <TextInput
-            value={formData.installments.value}
-            label="Installments"
-            style={inputStyles.container}
-            onChangeText={onInstallmentsChange}
-            keyboardType="number-pad"
-            required
-            hasError={formData.installments.error}
-          />
-        )}
+        {formData.paymentMethod?.value &&
+          availablePaymentMethods?.[formData.paymentMethod.value.row].includes('Credit') && (
+            <TextInput
+              value={formData.installments.value}
+              label="Installments"
+              style={inputStyles.container}
+              onChangeText={onInstallmentsChange}
+              keyboardType="number-pad"
+              required
+              hasError={formData.installments.error}
+            />
+          )}
         {/* @ts-ignore using Spinner as-is actually works */}
         <Button
           onPress={onSubmitPress}

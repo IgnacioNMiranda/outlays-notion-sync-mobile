@@ -1,7 +1,7 @@
 import { TextInputProps, View, StyleSheet } from 'react-native'
 import { Input as InputKitten } from '@ui-kitten/components'
-import { Text } from '../text/text'
-import { ErrorMessage } from '../error-message/error-message'
+import { Text } from '../../text'
+import { ErrorMessage } from '../../error-message/error-message'
 import { styles } from './text-input.styles'
 
 export interface CustomTextInputProps extends TextInputProps {

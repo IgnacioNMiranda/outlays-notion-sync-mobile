@@ -1,5 +1,5 @@
 import { Divider, List as KittenList, ListItem } from '@ui-kitten/components'
-import { OutlayEntry } from '../../services/notion/get-outlay-entries'
+import { Outlay } from '../../services/notion/get-outlays'
 import { formatCurrency } from '../../utils/formatters'
 
 const ListItemRenderer = ({
@@ -11,7 +11,7 @@ const ListItemRenderer = ({
   }
 }) => <ListItem title={item.title} description={item.description} />
 
-export const OutlaysList = ({ outlays }: { outlays: OutlayEntry[] }) => {
+export const OutlaysList = ({ outlays }: { outlays: Outlay[] }) => {
   const data = outlays.map((outlay) => ({
     title: `${outlay.title} (${outlay.date})`,
     description: formatCurrency(outlay.price),

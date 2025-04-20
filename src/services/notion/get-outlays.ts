@@ -1,13 +1,13 @@
 import { notionClient } from './client'
 import { NOTION_DATABASE_ID } from '@env'
 
-export type OutlayEntry = {
+export type Outlay = {
   title: string
   date: string
   price: number
 }
 
-export const getOutlayEntries = async () => {
+export const getOutlays = async () => {
   const data = await notionClient.databases.query({
     database_id: NOTION_DATABASE_ID,
     sorts: [
@@ -44,5 +44,5 @@ export const getOutlayEntries = async () => {
           }
       }
     })
-    .filter(Boolean) as OutlayEntry[]
+    .filter(Boolean) as Outlay[]
 }

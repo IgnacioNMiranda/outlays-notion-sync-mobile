@@ -3,9 +3,9 @@ import { ApplicationProvider, IconRegistry } from '@ui-kitten/components'
 import { NavigationContainer } from '@react-navigation/native'
 import * as eva from '@eva-design/eva'
 import { default as theme } from './theme.json' // <-- Import app theme
-import { TabNavigator } from './src/components/tab-navigator/tab-navigator'
+import { TabNavigator } from './src/components/core/tab-navigator/tab-navigator'
 import { EvaIconsPack } from '@ui-kitten/eva-icons'
-import { useIsDarkTheme } from './src/hooks/use-is-dark-theme'
+import { useIsDarkTheme } from './src/hooks/utils/use-is-dark-theme'
 
 const queryClient = new QueryClient()
 

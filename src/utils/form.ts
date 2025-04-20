@@ -7,7 +7,7 @@ interface FieldData<FieldValue> {
   error: boolean
 }
 
-export interface FormData {
+export interface CreateOutlayFormData {
   name: FieldData<string>
   date: FieldData<Date>
   tags: FieldData<IndexPath[]>
@@ -16,11 +16,11 @@ export interface FormData {
   installments: FieldData<string>
 }
 
-export const getUpdatedFormState = (formData: FormData) => {
-  const newFormData = cloneDeep<FormData>(formData)
+export const getUpdatedFormState = (formData: CreateOutlayFormData) => {
+  const newFormData = cloneDeep<CreateOutlayFormData>(formData)
 
   Object.keys(newFormData).forEach((key) => {
-    const formKey = key as keyof FormData
+    const formKey = key as keyof CreateOutlayFormData
     if (newFormData[formKey].required) {
       const isInvalidString = typeof newFormData[formKey].value === 'string' && !newFormData[formKey].value
       const isInvalidArray =
@@ -38,7 +38,7 @@ export const getUpdatedFormState = (formData: FormData) => {
 
   return {
     hasErrors: Object.keys(formData).some((key) => {
-      const formKey = key as keyof FormData
+      const formKey = key as keyof CreateOutlayFormData
 
       if (formData[formKey].required && !formData[formKey].value && typeof formData[formKey].value !== 'boolean')
         return true

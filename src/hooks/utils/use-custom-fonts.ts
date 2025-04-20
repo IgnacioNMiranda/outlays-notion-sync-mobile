@@ -4,7 +4,7 @@ import * as SplashScreen from 'expo-splash-screen'
 
 export const useCustomFonts = () => {
   const [fontsLoaded] = useFonts({
-    Sono: require('../../assets/fonts/Sono/Sono-Medium.ttf'),
+    Sono: require('../../../assets/fonts/Sono/Sono-Medium.ttf'),
   })
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
