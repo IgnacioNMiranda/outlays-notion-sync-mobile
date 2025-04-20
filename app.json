@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -29,6 +31,7 @@
       "eas": {
         "projectId": "70c5218e-f89d-428c-9f9b-664acf0cca0a"
       }
-    }
+    },
+    "owner": "ign_n"
   }
 }
