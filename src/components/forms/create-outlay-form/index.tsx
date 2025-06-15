@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { View, GestureResponderEvent, Alert, ScrollView } from 'react-native'
-import { Button } from '@ui-kitten/components'
+import { Button, Text } from '@ui-kitten/components'
 
 import { INITIAL_FORM_STATE } from './initial-state'
 import { formStyles, inputStyles, submitButtonStyles } from './create-outlay-form.styles'
@@ -16,17 +16,21 @@ import { Select } from '../../inputs/select'
 
 export const CreateOutlayForm = () => {
   const { createOutlay } = useCreateOutlay()
-  const { availableTags, availablePaymentMethods } = useOutlaySchema()
+  const { availableTags, availablePaymentMethods, availableTypes } = useOutlaySchema()
   const { invalidateOutlays, invalidateSpentMoney } = useInvalidateData()
 
   const [formData, setFormData] = useState<CreateOutlayFormData>(INITIAL_FORM_STATE)
+
+  const onTextInputChange = (key: keyof CreateOutlayFormData, value: string) => {
+    setFormData({ ...formData, [key]: { ...formData[key], value, error: !value } })
+  }
 
   const onDateChange = (selectedDate: Date) => {
     setFormData({ ...formData, date: { ...formData.date, value: selectedDate } })
   }
 
   const onPriceChange = (price: string) => {
-    const sanitizedPrice = price.match(/^-?\d*$/)
+    const sanitizedPrice = price.match(/^\d+$/)
     const finalPrice = (sanitizedPrice ?? '').toString()
     setFormData({ ...formData, price: { ...formData.price, value: finalPrice, error: !finalPrice } })
   }
@@ -49,13 +53,19 @@ export const CreateOutlayForm = () => {
     if (!formState.hasErrors && !!availableTags && !!availablePaymentMethods) {
       const date = formData.date.value.toISOString().split('T')[0]
 
+      const typeValue = formData.type?.value && availableTypes[formData.type.value.row]
+
       const body: CreateOutlayDTO = {
         name: formData.name.value,
         date,
         tags: formData.tags.value.map((tagIndex) => availableTags[tagIndex.row]),
         price: Number(formData.price.value),
-        paymentMethod: formData.paymentMethod?.value && availablePaymentMethods[formData.paymentMethod.value.row],
+        paymentMethod:
+          typeValue === 'Refund'
+            ? undefined
+            : formData.paymentMethod?.value && availablePaymentMethods[formData.paymentMethod.value.row],
         installments: Number(formData.installments.value),
+        type: typeValue,
       }
 
       try {
@@ -89,7 +99,7 @@ export const CreateOutlayForm = () => {
           label="Name"
           style={inputStyles.container}
           onChangeText={(text) => {
-            setFormData({ ...formData, name: { ...formData.name, value: text, error: !text } })
+            onTextInputChange('name', text)
           }}
           required
           hasError={formData.name.error}
@@ -115,6 +125,22 @@ export const CreateOutlayForm = () => {
           hasError={formData.tags.error}
           multiSelect
         />
+        <Select
+          onSelect={(type) => {
+            if (!('length' in type))
+              setFormData({
+                ...formData,
+                type: { ...formData.type, value: type, error: !type },
+              })
+          }}
+          options={availableTypes ?? []}
+          selectedIndex={formData.type.value}
+          style={{ marginBottom: 20, borderRadius: 2 }}
+          label="Type"
+          placeholder="Select Type"
+          hasError={formData.type.error}
+          required
+        />
         <TextInput
           value={formData.price.value}
           label="Price"
@@ -124,24 +150,29 @@ export const CreateOutlayForm = () => {
           required
           hasError={formData.price.error}
         />
-        <Select
-          onSelect={(paymentMethod) => {
-            if (!('length' in paymentMethod))
-              setFormData({
-                ...formData,
-                paymentMethod: { ...formData.paymentMethod, value: paymentMethod, error: !paymentMethod },
-              })
-          }}
-          options={availablePaymentMethods ?? []}
-          selectedIndex={formData.paymentMethod.value}
-          style={{ marginBottom: 20, borderRadius: 2 }}
-          label="Payment Method"
-          placeholder="Select Payment Method"
-          hasError={formData.paymentMethod.error}
-          required
-        />
+        {availableTypes[formData.type?.value?.row] !== 'Refund' && (
+          <Select
+            onSelect={(paymentMethod) => {
+              if (!('length' in paymentMethod))
+                setFormData({
+                  ...formData,
+                  paymentMethod: { ...formData.paymentMethod, value: paymentMethod, error: !paymentMethod },
+                })
+            }}
+            options={availablePaymentMethods ?? []}
+            selectedIndex={formData.paymentMethod.value}
+            style={{ marginBottom: 20, borderRadius: 2 }}
+            label="Payment Method"
+            placeholder="Select Payment Method"
+            hasError={formData.paymentMethod.error}
+            required
+          />
+        )}
+
         {formData.paymentMethod?.value &&
-          availablePaymentMethods?.[formData.paymentMethod.value.row].includes('Credit') && (
+          availablePaymentMethods?.[formData.paymentMethod.value.row].includes('Credit') &&
+          formData.type?.value?.toString() !== 'Refund' &&
+          availableTypes[formData.type?.value?.row] !== 'Refund' && (
             <TextInput
               value={formData.installments.value}
               label="Installments"

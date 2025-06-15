@@ -18,7 +18,8 @@ export const createOutlay = async (outlayDto: CreateOutlayDTO) => {
     // Type of the data doesn't really matter, not doing anything with it.
     return { data: outlay, error: '' }
   }
+  const err = await response.json()
 
-  const error = response.statusText || getStatusError(response.status)
+  const error = err.message || getStatusError(response.status)
   return { data: null, error }
 }

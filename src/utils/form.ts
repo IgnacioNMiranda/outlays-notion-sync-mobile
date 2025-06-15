@@ -14,6 +14,7 @@ export interface CreateOutlayFormData {
   price: FieldData<string>
   paymentMethod: FieldData<IndexPath>
   installments: FieldData<string>
+  type: FieldData<IndexPath>
 }
 
 export const getUpdatedFormState = (formData: CreateOutlayFormData) => {
@@ -23,11 +24,13 @@ export const getUpdatedFormState = (formData: CreateOutlayFormData) => {
     const formKey = key as keyof CreateOutlayFormData
     if (newFormData[formKey].required) {
       const isInvalidString = typeof newFormData[formKey].value === 'string' && !newFormData[formKey].value
+
       const isInvalidArray =
         typeof newFormData[formKey].value === 'object' &&
         Array.isArray(newFormData[formKey].value) &&
         !(newFormData[formKey].value instanceof Date) &&
         !(newFormData[formKey].value as IndexPath[]).length
+
       const isUndefined = typeof newFormData[formKey].value === 'undefined'
 
       if (isInvalidString || isInvalidArray || isUndefined) {
