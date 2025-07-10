@@ -15,11 +15,15 @@ export const CustomText = ({
   fontWeight = '400',
   size = 'regular',
   status = 'basic',
+  marginTop,
+  marginBottom,
 }: {
   label: string
   fontWeight?: TextStyle['fontWeight']
   size?: TextSize
   status?: EvaStatus
+  marginTop?: TextStyle['marginTop']
+  marginBottom?: TextStyle['marginBottom']
 }) => {
   return (
     <KittenText
@@ -28,6 +32,8 @@ export const CustomText = ({
         fontWeight,
         fontFamily: 'Sono',
         fontSize: sizeStyles[size],
+        marginTop,
+        marginBottom,
       }}
     >
       {label}

@@ -1,5 +1,5 @@
 import { Layout } from '@ui-kitten/components'
-import { StatusBar, View } from 'react-native'
+import { Platform, ScrollView, StatusBar } from 'react-native'
 import { useCustomFonts } from '../../../../hooks/utils/use-custom-fonts'
 import { useGlobalStyle } from '../../../../hooks/utils/use-global-style'
 import { CreateOutlayForm } from '../../../forms/create-outlay-form'
@@ -14,10 +14,16 @@ export const NewOutlayScreen = () => {
   return (
     <Layout onLayout={onLayoutRootView} style={global} level="1">
       <StatusBar {...statusBar} />
-      <View style={{ display: 'flex', flexDirection: 'column', gap: 40, width: '80%', alignItems: 'center' }}>
-        <CustomText label="Create New Outlay" size="big" fontWeight="300" />
+      <CustomText
+        label="Create New Outlay"
+        size="big"
+        fontWeight="300"
+        marginBottom={40}
+        marginTop={Platform.OS === 'ios' ? 30 : 0}
+      />
+      <ScrollView style={{ width: '80%' }}>
         <CreateOutlayForm />
-      </View>
+      </ScrollView>
     </Layout>
   )
 }

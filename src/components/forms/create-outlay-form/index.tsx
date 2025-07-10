@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { View, GestureResponderEvent, Alert, ScrollView } from 'react-native'
-import { Button, Text } from '@ui-kitten/components'
+import { View, GestureResponderEvent, Alert } from 'react-native'
+import { Button } from '@ui-kitten/components'
 
 import { INITIAL_FORM_STATE } from './initial-state'
 import { formStyles, inputStyles, submitButtonStyles } from './create-outlay-form.styles'
@@ -93,108 +93,110 @@ export const CreateOutlayForm = () => {
 
   return (
     <View style={formStyles.container}>
-      <ScrollView>
-        <TextInput
-          value={formData.name.value}
-          label="Name"
-          style={inputStyles.container}
-          onChangeText={(text) => {
-            onTextInputChange('name', text)
-          }}
-          required
-          hasError={formData.name.error}
-        />
-        <DateInput
-          required
-          label="Date"
-          date={formData.date.value}
-          onChange={onDateChange}
-          style={{ marginBottom: 20 }}
-        />
+      <TextInput
+        value={formData.name.value}
+        label="Name"
+        style={inputStyles.container}
+        onChangeText={(text) => {
+          onTextInputChange('name', text)
+        }}
+        required
+        hasError={formData.name.error}
+      />
+      <DateInput
+        required
+        label="Date"
+        date={formData.date.value}
+        onChange={onDateChange}
+        style={{ marginBottom: 20 }}
+      />
+
+      <Select
+        onSelect={(tags) => {
+          if ('length' in tags)
+            setFormData({ ...formData, tags: { ...formData.tags, value: tags, error: !tags.length } })
+        }}
+        options={availableTags ?? []}
+        selectedIndex={formData.tags.value}
+        style={{ marginBottom: 20, borderRadius: 2 }}
+        label="Tags"
+        placeholder="Select Tags"
+        required
+        hasError={formData.tags.error}
+        multiSelect
+      />
+      <Select
+        onSelect={(type) => {
+          if (!('length' in type))
+            setFormData({
+              ...formData,
+              type: { ...formData.type, value: type, error: !type },
+            })
+        }}
+        options={availableTypes ?? []}
+        selectedIndex={formData.type.value}
+        style={{ marginBottom: 20, borderRadius: 2 }}
+        label="Type"
+        placeholder="Select Type"
+        hasError={formData.type.error}
+        required
+      />
+
+      {availableTypes[formData.type?.value?.row] !== 'Refund' && (
         <Select
-          onSelect={(tags) => {
-            if ('length' in tags)
-              setFormData({ ...formData, tags: { ...formData.tags, value: tags, error: !tags.length } })
-          }}
-          options={availableTags ?? []}
-          selectedIndex={formData.tags.value}
-          style={{ marginBottom: 20, borderRadius: 2 }}
-          label="Tags"
-          placeholder="Select Tags"
-          required
-          hasError={formData.tags.error}
-          multiSelect
-        />
-        <Select
-          onSelect={(type) => {
-            if (!('length' in type))
+          onSelect={(paymentMethod) => {
+            if (!('length' in paymentMethod))
               setFormData({
                 ...formData,
-                type: { ...formData.type, value: type, error: !type },
+                paymentMethod: { ...formData.paymentMethod, value: paymentMethod, error: !paymentMethod },
               })
           }}
-          options={availableTypes ?? []}
-          selectedIndex={formData.type.value}
+          options={availablePaymentMethods ?? []}
+          selectedIndex={formData.paymentMethod.value}
           style={{ marginBottom: 20, borderRadius: 2 }}
-          label="Type"
-          placeholder="Select Type"
-          hasError={formData.type.error}
+          label="Payment Method"
+          placeholder="Select Payment Method"
+          hasError={formData.paymentMethod.error}
           required
         />
-        <TextInput
-          value={formData.price.value}
-          label="Price"
-          style={inputStyles.container}
-          onChangeText={onPriceChange}
-          keyboardType="number-pad"
-          required
-          hasError={formData.price.error}
-        />
-        {availableTypes[formData.type?.value?.row] !== 'Refund' && (
-          <Select
-            onSelect={(paymentMethod) => {
-              if (!('length' in paymentMethod))
-                setFormData({
-                  ...formData,
-                  paymentMethod: { ...formData.paymentMethod, value: paymentMethod, error: !paymentMethod },
-                })
-            }}
-            options={availablePaymentMethods ?? []}
-            selectedIndex={formData.paymentMethod.value}
-            style={{ marginBottom: 20, borderRadius: 2 }}
-            label="Payment Method"
-            placeholder="Select Payment Method"
-            hasError={formData.paymentMethod.error}
+      )}
+
+      {formData.paymentMethod?.value &&
+        availablePaymentMethods?.[formData.paymentMethod.value.row].includes('Credit') &&
+        formData.type?.value?.toString() !== 'Refund' &&
+        availableTypes[formData.type?.value?.row] !== 'Refund' && (
+          <TextInput
+            value={formData.installments.value}
+            label="Installments"
+            style={inputStyles.container}
+            onChangeText={onInstallmentsChange}
+            keyboardType="number-pad"
             required
+            hasError={formData.installments.error}
           />
         )}
 
-        {formData.paymentMethod?.value &&
-          availablePaymentMethods?.[formData.paymentMethod.value.row].includes('Credit') &&
-          formData.type?.value?.toString() !== 'Refund' &&
-          availableTypes[formData.type?.value?.row] !== 'Refund' && (
-            <TextInput
-              value={formData.installments.value}
-              label="Installments"
-              style={inputStyles.container}
-              onChangeText={onInstallmentsChange}
-              keyboardType="number-pad"
-              required
-              hasError={formData.installments.error}
-            />
-          )}
-        {/* @ts-ignore using Spinner as-is actually works */}
-        <Button
-          onPress={onSubmitPress}
-          style={[submitButtonStyles.container]}
-          activeOpacity={1}
-          disabled={isSubmitting}
-          status="basic"
-          {...(isSubmitting ? { accessoryLeft: Spinner } : {})}
-        >
-          Submit
-        </Button>
-      </ScrollView>
+      <TextInput
+        value={formData.price.value}
+        label="Price"
+        style={inputStyles.container}
+        onChangeText={onPriceChange}
+        keyboardType="number-pad"
+        required
+        hasError={formData.price.error}
+      />
+
+      {/* @ts-ignore using Spinner as-is actually works */}
+      <Button
+        onPress={onSubmitPress}
+        style={[submitButtonStyles.container]}
+        activeOpacity={1}
+        disabled={isSubmitting}
+        status="basic"
+        {...(isSubmitting ? { accessoryLeft: Spinner } : {})}
+      >
+        Submit
+      </Button>
     </View>
   )
 }
