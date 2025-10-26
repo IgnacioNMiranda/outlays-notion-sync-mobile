@@ -2,7 +2,7 @@ export interface CreateOutlayDTO {
   name: string
   date: string
   tags: string[]
-  type: string
+  refund?: number
   price: number
   paymentMethod?: string
   installments: number

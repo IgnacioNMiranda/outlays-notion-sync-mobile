@@ -1,4 +1,3 @@
-import { IndexPath } from '@ui-kitten/components'
 import { CreateOutlayFormData } from '../../../utils/form'
 
 export const INITIAL_FORM_STATE: CreateOutlayFormData = {
@@ -22,6 +21,11 @@ export const INITIAL_FORM_STATE: CreateOutlayFormData = {
     required: true,
     error: false,
   },
+  refund: {
+    value: '',
+    required: false,
+    error: false,
+  },
   installments: {
     value: '1',
     required: false,
@@ -31,12 +35,6 @@ export const INITIAL_FORM_STATE: CreateOutlayFormData = {
     // @ts-ignore
     value: undefined,
     required: false,
-    error: false,
-  },
-  type: {
-    // Using IndexPath(0) for now since type options are static
-    value: new IndexPath(0),
-    required: true,
     error: false,
   },
 }

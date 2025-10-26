@@ -14,7 +14,7 @@ export interface CreateOutlayFormData {
   price: FieldData<string>
   paymentMethod: FieldData<IndexPath>
   installments: FieldData<string>
-  type: FieldData<IndexPath>
+  refund: FieldData<string>
 }
 
 export const getUpdatedFormState = (formData: CreateOutlayFormData) => {

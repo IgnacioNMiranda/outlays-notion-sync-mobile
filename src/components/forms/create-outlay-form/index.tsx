@@ -16,7 +16,7 @@ import { Select } from '../../inputs/select'
 
 export const CreateOutlayForm = () => {
   const { createOutlay } = useCreateOutlay()
-  const { availableTags, availablePaymentMethods, availableTypes } = useOutlaySchema()
+  const { availableTags, availablePaymentMethods } = useOutlaySchema()
   const { invalidateOutlays, invalidateSpentMoney } = useInvalidateData()
 
   const [formData, setFormData] = useState<CreateOutlayFormData>(INITIAL_FORM_STATE)
@@ -29,10 +29,10 @@ export const CreateOutlayForm = () => {
     setFormData({ ...formData, date: { ...formData.date, value: selectedDate } })
   }
 
-  const onPriceChange = (price: string) => {
+  const onPriceChange = (price: string, key: keyof CreateOutlayFormData) => {
     const sanitizedPrice = price.match(/^\d+$/)
     const finalPrice = (sanitizedPrice ?? '').toString()
-    setFormData({ ...formData, price: { ...formData.price, value: finalPrice, error: !finalPrice } })
+    setFormData({ ...formData, [key]: { ...formData[key], value: finalPrice, error: !finalPrice } })
   }
 
   const onInstallmentsChange = (installments: string) => {
@@ -53,19 +53,14 @@ export const CreateOutlayForm = () => {
     if (!formState.hasErrors && !!availableTags && !!availablePaymentMethods) {
       const date = formData.date.value.toISOString().split('T')[0]
 
-      const typeValue = formData.type?.value && availableTypes[formData.type.value.row]
-
       const body: CreateOutlayDTO = {
         name: formData.name.value,
         date,
         tags: formData.tags.value.map((tagIndex) => availableTags[tagIndex.row]),
         price: Number(formData.price.value),
-        paymentMethod:
-          typeValue === 'Refund'
-            ? undefined
-            : formData.paymentMethod?.value && availablePaymentMethods[formData.paymentMethod.value.row],
+        paymentMethod: formData.paymentMethod?.value && availablePaymentMethods[formData.paymentMethod.value.row],
         installments: Number(formData.installments.value),
-        type: typeValue,
+        refund: Number(formData.refund.value),
       }
 
       try {
@@ -125,46 +120,26 @@ export const CreateOutlayForm = () => {
         hasError={formData.tags.error}
         multiSelect
       />
+
       <Select
-        onSelect={(type) => {
-          if (!('length' in type))
+        onSelect={(paymentMethod) => {
+          if (!('length' in paymentMethod))
             setFormData({
               ...formData,
-              type: { ...formData.type, value: type, error: !type },
+              paymentMethod: { ...formData.paymentMethod, value: paymentMethod, error: !paymentMethod },
             })
         }}
-        options={availableTypes ?? []}
-        selectedIndex={formData.type.value}
+        options={availablePaymentMethods ?? []}
+        selectedIndex={formData.paymentMethod.value}
         style={{ marginBottom: 20, borderRadius: 2 }}
-        label="Type"
-        placeholder="Select Type"
-        hasError={formData.type.error}
+        label="Payment Method"
+        placeholder="Select Payment Method"
+        hasError={formData.paymentMethod.error}
         required
       />
 
-      {availableTypes[formData.type?.value?.row] !== 'Refund' && (
-        <Select
-          onSelect={(paymentMethod) => {
-            if (!('length' in paymentMethod))
-              setFormData({
-                ...formData,
-                paymentMethod: { ...formData.paymentMethod, value: paymentMethod, error: !paymentMethod },
-              })
-          }}
-          options={availablePaymentMethods ?? []}
-          selectedIndex={formData.paymentMethod.value}
-          style={{ marginBottom: 20, borderRadius: 2 }}
-          label="Payment Method"
-          placeholder="Select Payment Method"
-          hasError={formData.paymentMethod.error}
-          required
-        />
-      )}
-
       {formData.paymentMethod?.value &&
-        availablePaymentMethods?.[formData.paymentMethod.value.row].includes('Credit') &&
-        formData.type?.value?.toString() !== 'Refund' &&
-        availableTypes[formData.type?.value?.row] !== 'Refund' && (
+        availablePaymentMethods?.[formData.paymentMethod.value.row].includes('Credit') && (
           <TextInput
             value={formData.installments.value}
             label="Installments"
@@ -180,10 +155,19 @@ export const CreateOutlayForm = () => {
         value={formData.price.value}
         label="Price"
         style={inputStyles.container}
-        onChangeText={onPriceChange}
+        onChangeText={(value) => onPriceChange(value, 'price')}
         keyboardType="number-pad"
         required
         hasError={formData.price.error}
+      />
+
+      <TextInput
+        value={formData.refund.value}
+        label="Refund"
+        style={inputStyles.container}
+        onChangeText={(value) => onPriceChange(value, 'refund')}
+        keyboardType="number-pad"
+        hasError={formData.refund.error}
       />
 
       {/* @ts-ignore using Spinner as-is actually works */}
